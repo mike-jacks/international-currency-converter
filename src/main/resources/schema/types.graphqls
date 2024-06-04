@@ -16,3 +16,9 @@ type Country {
   dutyRate: Float
   taxRate: Float
 }
+
+type Product {
+  id: ID!
+  name: String
+  price: Float
+}
