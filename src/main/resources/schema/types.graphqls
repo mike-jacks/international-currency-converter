@@ -26,5 +26,5 @@ type Product {
 type DeleteItemResponse {
   success: Boolean!
   message: String!
-  deletedItemId: UUID!
+  deletedItemId: UUID
 }
