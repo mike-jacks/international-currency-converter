@@ -1,0 +1,18 @@
+type Currency {
+  id: ID!
+  baseCode: String
+  targetCode: String
+  conversionRate: Float
+}
+
+type LandedCost {
+  totalCost: Float
+}
+
+type Country {
+  id: ID!
+  name: String
+  code: String
+  dutyRate: Float
+  taxRate: Float
+}

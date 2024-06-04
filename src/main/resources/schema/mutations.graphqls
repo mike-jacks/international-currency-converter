@@ -1,0 +1,5 @@
+type Mutation {
+    addCountry(name: String!, dutyRate: Float!, taxRate: Float!) : Country
+    updateCountryById(id: UUID!): Country
+    updateCountryByName(name: String!): Country
+}
