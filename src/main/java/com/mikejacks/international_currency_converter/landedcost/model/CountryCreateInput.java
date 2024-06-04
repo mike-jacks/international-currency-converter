@@ -1,14 +1,23 @@
 package com.mikejacks.international_currency_converter.landedcost.model;
 
-public class Country {
+import javax.validation.constraints.NotNull;
+
+public class CountryCreateInput {
+    @NotNull
     private String name;
+
+    @NotNull
     private String code;
+
+    @NotNull
     private Double dutyRate;
+
+    @NotNull
     private Double taxRate;
 
-    public Country() {}
+    public CountryCreateInput() {}
 
-    public Country(String name, String code, Double dutyRate, Double taxRate) {
+    public CountryCreateInput(String name, String code, Double dutyRate, Double taxRate) {
        this.setName(name);
        this.setCode(code);
        this.setDutyRate(dutyRate);
@@ -28,7 +37,10 @@ public class Country {
     }
 
     public void setCode(String code) {
-        this.code = code;
+        if  (code == null || !code.trim().matches("[A-Za-z]{3}")) {
+            throw new IllegalArgumentException("Currency code must be exactly 3 characters long and only include letters");
+        }
+        this.code = code.trim().toUpperCase();
     }
 
     public Double getDutyRate() {

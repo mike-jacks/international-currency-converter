@@ -1,6 +1,11 @@
 type Query {
+  # Query Currency
   getCurrency(baseCode: String!, targetCode: String!): Currency
+
+  # Query CalculatedLandedCost
   calculateLandedCost(productId: UUID!, countryId: UUID!, targetCurrencyCode: String!, baseCurrencyCode: String!): LandedCost
+
+  # Query Country
   countries: [Country]
   countryById(countryId: UUID!): Country
   countryByName(name: String!): Country

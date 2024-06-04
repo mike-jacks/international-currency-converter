@@ -22,3 +22,9 @@ type Product {
   name: String
   price: Float
 }
+
+type DeleteItemResponse {
+  success: Boolean!
+  message: String!
+  deletedItemId: UUID!
+}

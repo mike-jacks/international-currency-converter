@@ -1,0 +1,13 @@
+input CountryCreateInput {
+    name: String!
+    code: String!
+    dutyRate: Float!
+    taxRate: Float!
+}
+
+input CountryUpdateInput {
+    name: String
+    code: String
+    dutyRate: Float
+    taxRate: Float
+}

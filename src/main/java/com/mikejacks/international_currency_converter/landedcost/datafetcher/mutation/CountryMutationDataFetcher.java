@@ -1,0 +1,47 @@
+package com.mikejacks.international_currency_converter.landedcost.datafetcher.mutation;
+
+import com.mikejacks.international_currency_converter.landedcost.entity.Country;
+import com.mikejacks.international_currency_converter.landedcost.model.CountryCreateInput;
+import com.mikejacks.international_currency_converter.landedcost.model.CountryUpdateInput;
+import com.mikejacks.international_currency_converter.landedcost.model.DeleteItemResponse;
+import com.mikejacks.international_currency_converter.landedcost.service.CountryService;
+import com.netflix.graphql.dgs.DgsComponent;
+import com.netflix.graphql.dgs.DgsMutation;
+import com.netflix.graphql.dgs.InputArgument;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.UUID;
+
+@DgsComponent
+public class CountryMutationDataFetcher {
+    private final CountryService countryService;
+
+    @Autowired
+    public CountryMutationDataFetcher(CountryService countryService) {
+        this.countryService = countryService;
+    }
+
+    @DgsMutation
+    public Country addCountry(@InputArgument CountryCreateInput country) {
+        System.out.println("Received addCountry request: " + country);
+        Country result = countryService.addCountry(country);
+        System.out.println("Result of addCountry: " + result);
+        return result;
+    }
+
+    @DgsMutation
+    public Country updateCountryById(@InputArgument UUID id, @InputArgument CountryUpdateInput country) {
+        return countryService.updateCountryById(id, country);
+    }
+
+    @DgsMutation
+    public Country updateCountryByName(@InputArgument String name, @InputArgument CountryUpdateInput country) {
+        return countryService.updateCountryByName(name, country);
+    }
+
+    @DgsMutation
+    public DeleteItemResponse deleteCountryById(@InputArgument UUID id) {
+        return countryService.deleteCountryById(id);
+    }
+}

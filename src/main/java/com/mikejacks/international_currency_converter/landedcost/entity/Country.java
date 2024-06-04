@@ -33,6 +33,7 @@ public class Country {
     }
 
     public Country(UUID id, String name, String code, Double dutyRate, Double taxRate) {
+        this.id = UUID.randomUUID();
         this.setId(id);
         this.setName(name);
         this.setCode(code);

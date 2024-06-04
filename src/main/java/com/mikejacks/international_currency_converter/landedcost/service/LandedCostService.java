@@ -16,14 +16,20 @@ import java.util.UUID;
 
 @Service
 public class LandedCostService {
-    @Autowired
+
     private ProductRepository productRepository;
 
-    @Autowired
     private CountryRepository countryRepository;
 
-    @Autowired
     private LocalizationGraphQLClient localizationGraphQLClient;
+
+    @Autowired
+    public LandedCostService(ProductRepository productRepository, CountryRepository countryRepository, LocalizationGraphQLClient localizationGraphQLClient) {
+        this.productRepository = productRepository;
+        this.countryRepository = countryRepository;
+        this.localizationGraphQLClient = localizationGraphQLClient;
+
+    }
 
     public LandedCost calculateLandedCost(UUID productId, UUID countryId, String targetCurrencyCode, String baseCurrencyCode) {
         Product product = productRepository.findById(productId).orElseThrow();
@@ -45,19 +51,5 @@ public class LandedCostService {
 
     }
 
-    public List<Country> countries() {
-        return countryRepository.findAll();
-    }
 
-    public Country countryById(UUID countryId) {
-        return countryRepository.findById(countryId).orElse(null);
-    }
-
-    public Country countryByName(String name) {
-        return countryRepository.findByName(name);
-    }
-
-    public Country countryByCode(String code) {
-        return countryRepository.findByCode(code);
-    }
 }

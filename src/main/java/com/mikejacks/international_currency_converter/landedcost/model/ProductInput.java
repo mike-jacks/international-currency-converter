@@ -1,10 +1,10 @@
 package com.mikejacks.international_currency_converter.landedcost.model;
 
-public class Product {
+public class ProductInput {
     private String name;
     private Double price;
 
-    public Product(String name, Double price) {
+    public ProductInput(String name, Double price) {
         this.setName(name);
         this.setPrice(price);
 

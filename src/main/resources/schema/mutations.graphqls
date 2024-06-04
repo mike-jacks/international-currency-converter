@@ -1,5 +1,13 @@
 type Mutation {
-    addCountry(name: String!, dutyRate: Float!, taxRate: Float!) : Country
-    updateCountryById(id: UUID!): Country
-    updateCountryByName(name: String!): Country
+    # Mutate Country
+    addCountry(country: CountryCreateInput!): Country
+    updateCountryById(id: UUID!, country: CountryUpdateInput!): Country
+    updateCountryByName(name: String!, country: CountryUpdateInput!): Country
+    deleteCountryById(id: UUID!): DeleteItemResponse
+
+    # Mutate Products
+    addProduct(name: String!, price: Float!): Product
+    updateProductById(id: UUID!): Product
+    updateProductByName(name: String!): Product
+    deleteProductById(id: UUID!): DeleteItemResponse
 }
