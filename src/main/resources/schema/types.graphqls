@@ -21,6 +21,7 @@ type Product {
   id: ID!
   name: String
   price: Float
+  currencyCode: String
 }
 
 type DeleteItemResponse {

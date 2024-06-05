@@ -11,3 +11,13 @@ input CountryUpdateInput {
     dutyRate: Float
     taxRate: Float
 }
+
+input ProductCreateInput {
+    name: String!
+    price: String!
+}
+
+input ProductUpdateInput {
+    name: String
+    price: String
+}

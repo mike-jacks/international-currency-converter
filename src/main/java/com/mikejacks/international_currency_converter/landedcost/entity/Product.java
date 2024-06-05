@@ -21,18 +21,15 @@ public class Product {
     private String name;
     @Column(nullable = false)
     private Double price;
+    @Column(nullable = false, length = 3)
+    private String currencyCode;
 
     public Product() {}
 
-    public Product(UUID id, String name, Double price) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-    }
-
-    public Product(String name, Double price) {
-        this.name = name;
-        this.price = price;
+    public Product(String name, Double price, String currencyCode) {
+        this.setName(name);
+        this.setPrice(price);
+        this.setCurrencyCode(currencyCode);
     }
 
     /**
@@ -77,4 +74,14 @@ public class Product {
         this.price = price;
     }
 
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        if  (currencyCode == null || !currencyCode.trim().matches("[A-Za-z]{3}")) {
+            throw new IllegalArgumentException("Currency code must be exactly 3 characters long and only include letters");
+        }
+        this.currencyCode = currencyCode.trim().toUpperCase();
+    }
 }

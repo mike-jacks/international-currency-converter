@@ -15,14 +15,15 @@ import java.util.Optional;
 @Service
 public class CountryService {
 
-    private CountryRepository countryRepository;
+    private final CountryRepository countryRepository;
 
-    // Query Services
+
     @Autowired
     public CountryService(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
     }
 
+    // Query Services
     public List<Country> countries() {
         return countryRepository.findAll();
     }
@@ -32,11 +33,11 @@ public class CountryService {
     }
 
     public Country countryByName(String name) {
-        return countryRepository.findByName(name).orElseThrow();
+        return countryRepository.findCountryByName(name).orElse(null);
     }
 
     public Country countryByCode(String code) {
-        return countryRepository.findByCode(code).orElseThrow();
+        return countryRepository.findCountryByCode(code).orElseThrow();
     }
 
 
@@ -72,7 +73,7 @@ public class CountryService {
     }
 
     public Country updateCountryByName(String name, CountryUpdateInput country) {
-        Country existingCountry = countryRepository.findByName(name).orElseThrow(() -> new RuntimeException("Country not found"));
+        Country existingCountry = countryRepository.findCountryByName(name).orElseThrow(() -> new RuntimeException("Country not found"));
         if (country.getName() != null) {
             existingCountry.setName(country.getName());
         }

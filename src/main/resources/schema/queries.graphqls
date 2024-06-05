@@ -10,4 +10,13 @@ type Query {
   countryById(countryId: UUID!): Country
   countryByName(name: String!): Country
   countryByCode(code: String!): Country
+
+  # Query Product
+  products: [Product]
+  productById(productId: UUID!): Product
+  productByName(name: String!): Product
+  productsByPriceBetween(minPrice: Float!, maxPrice: Float!): [Product]
+  productsByPriceGreaterThanOrEqualTo(minPrice: Float!): [Product]
+  productsByPriceLessThanOrEqualTo(maxPrice: Float!): [Product]
+
 }

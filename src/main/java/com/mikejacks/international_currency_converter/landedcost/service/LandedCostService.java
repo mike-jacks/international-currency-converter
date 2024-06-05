@@ -38,15 +38,14 @@ public class LandedCostService {
         Currency conversionRateToBase = localizationGraphQLClient.getCurrency(baseCurrencyCode, targetCurrencyCode);
         Currency conversionRateFromBase = localizationGraphQLClient.getCurrency(baseCurrencyCode, targetCurrencyCode);
 
-        Double duty = product.getPrice() * country.getDutyRate();
-        Double tax = product.getPrice() * country.getTaxRate();
+        Double duty = product.getPrice() * (country.getDutyRate() / 100);
+        Double tax = product.getPrice() * (country.getTaxRate() / 100);
         Double totalCost = product.getPrice() + duty + tax;
 
         Double costInBaseCurrency = totalCost / conversionRateToBase.getConversionRate();
         Double convertedTotalCost = costInBaseCurrency * conversionRateFromBase.getConversionRate();
 
-        LandedCost landedCost = new LandedCost();
-        landedCost.setTotalCost(convertedTotalCost);
+        LandedCost landedCost = new LandedCost(convertedTotalCost);
         return landedCost;
 
     }

@@ -6,8 +6,8 @@ type Mutation {
     deleteCountryById(id: UUID!): DeleteItemResponse
 
     # Mutate Products
-    addProduct(name: String!, price: Float!): Product
-    updateProductById(id: UUID!): Product
-    updateProductByName(name: String!): Product
-    deleteProductById(id: UUID!): DeleteItemResponse
+    addProduct(product: ProductCreateInput): Product
+    updateProductById(productId: UUID!, product: ProductUpdateInput): Product
+    updateProductByName(name: String! product: ProductUpdateInput): Product
+    deleteProductById(productId: UUID!): DeleteItemResponse
 }
