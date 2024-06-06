@@ -7,7 +7,6 @@ import com.mikejacks.international_currency_converter.landedcost.model.DeleteIte
 import com.mikejacks.international_currency_converter.landedcost.service.impl.MockCountryService;
 import com.netflix.graphql.dgs.DgsComponent;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -149,9 +148,5 @@ class CountryMutationDataFetcherTest {
             assertEquals(existingCountryId, deletedItemResponse.deletedItemId());
             assertEquals(countriesBeginningListSize-1, mockCountryService.mutableCountries.size());
         }
-    }
-
-    @Test
-    void deleteCountryById() {
     }
 }
