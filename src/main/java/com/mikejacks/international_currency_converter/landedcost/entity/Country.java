@@ -30,6 +30,7 @@ public class Country {
     private Double taxRate;
 
     public Country() {
+        this.id = UUID.randomUUID();
     }
 
     public Country(UUID id, String name, String code, Double dutyRate, Double taxRate) {
@@ -115,5 +116,16 @@ public class Country {
             throw new IllegalArgumentException("Currency code must be exactly 3 characters long and only include letters");
         }
         this.code = code.trim().toUpperCase();
+    }
+
+    @Override
+    public String toString() {
+        return "Country{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", dutyRate=" + dutyRate +
+                ", taxRate=" + taxRate +
+                '}';
     }
 }

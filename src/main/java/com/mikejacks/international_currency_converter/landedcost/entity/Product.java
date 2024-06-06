@@ -27,6 +27,7 @@ public class Product {
     public Product() {}
 
     public Product(String name, Double price, String currencyCode) {
+        this.id = UUID.randomUUID();
         this.setName(name);
         this.setPrice(price);
         this.setCurrencyCode(currencyCode);
@@ -83,5 +84,15 @@ public class Product {
             throw new IllegalArgumentException("Currency code must be exactly 3 characters long and only include letters");
         }
         this.currencyCode = currencyCode.trim().toUpperCase();
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", currencyCode='" + currencyCode + '\'' +
+                '}';
     }
 }

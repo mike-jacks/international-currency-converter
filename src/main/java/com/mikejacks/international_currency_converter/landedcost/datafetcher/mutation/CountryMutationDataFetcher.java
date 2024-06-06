@@ -9,7 +9,6 @@ import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.InputArgument;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
@@ -32,12 +31,12 @@ public class CountryMutationDataFetcher {
 
     @DgsMutation
     public Country updateCountryById(@InputArgument UUID id, @InputArgument CountryUpdateInput country) {
-        return countryService.updateCountryById(id, country);
+        return countryService.updateCountry(id, null, country);
     }
 
     @DgsMutation
     public Country updateCountryByName(@InputArgument String name, @InputArgument CountryUpdateInput country) {
-        return countryService.updateCountryByName(name, country);
+        return countryService.updateCountry(null, name, country);
     }
 
     @DgsMutation

@@ -108,4 +108,13 @@ public class Currency {
         this.conversionRate = conversionRate;
     }
 
+    @Override
+    public String toString() {
+        return "Currency{" +
+                "id=" + id +
+                ", baseCode='" + baseCode + '\'' +
+                ", targetCode='" + targetCode + '\'' +
+                ", conversionRate=" + conversionRate +
+                '}';
+    }
 }

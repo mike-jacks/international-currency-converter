@@ -13,6 +13,7 @@ type Query {
 
   # Query Product
   products: [Product]
+  product(productId: UUID, name: String): Product
   productById(productId: UUID!): Product
   productByName(name: String!): Product
   productsByPriceBetween(minPrice: Float!, maxPrice: Float!): [Product]

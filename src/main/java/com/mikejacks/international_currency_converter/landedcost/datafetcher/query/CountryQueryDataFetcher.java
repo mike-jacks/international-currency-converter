@@ -15,27 +15,27 @@ public class CountryQueryDataFetcher {
     private CountryService countryService;
 
     @Autowired
-    public CountryQueryDataFetcher(CountryService countryService) {
+    public CountryQueryDataFetcher(final CountryService countryService) {
         this.countryService = countryService;
     }
+
     @DgsQuery
     public List<Country> countries() {
-        System.out.println("Fetching all countries");
         return countryService.countries();
     }
 
     @DgsQuery
-    public Country countryById(@InputArgument UUID countryId) {
+    public Country countryById(final @InputArgument UUID countryId) {
         return countryService.countryById(countryId);
     }
 
     @DgsQuery
-    public Country countryByName(@InputArgument String name) {
+    public Country countryByName(final @InputArgument String name) {
         return countryService.countryByName(name);
     }
 
     @DgsQuery
-    public Country countryByCode(@InputArgument String code) {
+    public Country countryByCode(final @InputArgument String code) {
         return countryService.countryByCode(code);
     }
 

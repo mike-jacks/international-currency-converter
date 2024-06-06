@@ -5,6 +5,7 @@ import com.mikejacks.international_currency_converter.landedcost.service.Product
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import java.util.UUID;
 public class ProductQueryDataFetcher {
     private final ProductService productService;
 
+    @Autowired
     public ProductQueryDataFetcher(ProductService productService) {
         this.productService = productService;
     }
@@ -20,6 +22,11 @@ public class ProductQueryDataFetcher {
     @DgsQuery
     public List<Product> products() {
         return productService.products();
+    }
+
+    @DgsQuery
+    public Product product(@InputArgument UUID productId, String name) {
+        return productService.product(productId, name);
     }
 
     @DgsQuery
