@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class LocalizationGraphQLClient {
@@ -34,10 +35,7 @@ public class LocalizationGraphQLClient {
         Optional<Map<String, Object>> optionalCurrencyData = castToMap(data.get("data"));
         if (optionalCurrencyData.isPresent()) {
             Map<String, Object> currencyData = (Map<String, Object>) optionalCurrencyData.get().get("getCurrency");
-            Currency currency = new Currency();
-            currency.setBaseCode((String) currencyData.get("baseCode"));
-            currency.setTargetCode((String) currencyData.get("targetCode"));
-            currency.setConversionRate((Double) currencyData.get("conversionRate"));
+            Currency currency = new Currency((UUID) currencyData.get("id"), (String) currencyData.get("baseCode"), (String) currencyData.get("targetCode"), (Double) currencyData.get("conversionRate"));
             return currency;
         } else {
             throw new RuntimeException("Invalid response format");

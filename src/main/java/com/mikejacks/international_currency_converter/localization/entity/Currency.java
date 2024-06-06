@@ -33,6 +33,7 @@ public class Currency {
     private Double conversionRate;
 
     public Currency() {
+        this.id = UUID.randomUUID();
     }
 
     public Currency(UUID id, String baseCode, String targetCode, Double conversionRate) {
