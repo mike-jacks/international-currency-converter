@@ -3,8 +3,6 @@ package com.mikejacks.international_currency_converter.landedcost.datafetcher.qu
 import com.mikejacks.international_currency_converter.landedcost.entity.Country;
 import com.mikejacks.international_currency_converter.landedcost.service.impl.MockCountryService;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -15,7 +13,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class CountryQueryDataFetcherTest {
@@ -50,7 +47,7 @@ public class CountryQueryDataFetcherTest {
         MockCountryService countryService = new MockCountryService(expectedCountries);
         CountryQueryDataFetcher countryQueryDataFetcher = new CountryQueryDataFetcher(countryService);
         if (expectedCountries.isEmpty()) {
-            assertThrows(IllegalArgumentException.class, () -> countryQueryDataFetcher.countryById(null));
+            assertEquals(null, countryQueryDataFetcher.countryById(UUID.randomUUID()));
         } else {
             UUID expectedCountryId = expectedCountries.get(0).getId();
             Country results = countryQueryDataFetcher.countryById(expectedCountryId);
@@ -64,8 +61,7 @@ public class CountryQueryDataFetcherTest {
         MockCountryService countryService = new MockCountryService(expectedCountries);
         CountryQueryDataFetcher countryQueryDataFetcher = new CountryQueryDataFetcher(countryService);
         if (expectedCountries.isEmpty()) {
-            IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryQueryDataFetcher.countryByName(null));
-            assertEquals(exception.getMessage(), "Argument for @NotNull parameter 'name' of com/mikejacks/international_currency_converter/landedcost/service/impl/MockCountryService.countryByName must not be null");
+            assertEquals(null, countryQueryDataFetcher.countryByName("Tatooine"));
         } else {
             String expectedCountryName = expectedCountries.get(0).getName();
             Country result = countryQueryDataFetcher.countryByName(expectedCountryName);
@@ -79,8 +75,7 @@ public class CountryQueryDataFetcherTest {
         MockCountryService countryService = new MockCountryService(expectedCountries);
         CountryQueryDataFetcher countryQueryDataFetcher = new CountryQueryDataFetcher(countryService);
         if (expectedCountries.isEmpty()) {
-            IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryQueryDataFetcher.countryByCode(null));
-            assertEquals(exception.getMessage(), "Argument for @NotNull parameter 'code' of com/mikejacks/international_currency_converter/landedcost/service/impl/MockCountryService.countryByCode must not be null");
+            assertEquals(null, countryQueryDataFetcher.countryByCode("TTO"));
         } else {
             String expectedCountryCode = expectedCountries.get(0).getCode();
             Country result = countryQueryDataFetcher.countryByCode(expectedCountryCode);

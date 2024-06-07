@@ -1,5 +1,6 @@
 package com.mikejacks.international_currency_converter.landedcost.service.impl;
 
+import com.mikejacks.international_currency_converter.landedcost.entity.Country;
 import com.mikejacks.international_currency_converter.landedcost.entity.Product;
 import com.mikejacks.international_currency_converter.landedcost.model.DeleteItemResponse;
 import com.mikejacks.international_currency_converter.landedcost.model.ProductCreateInput;
@@ -9,15 +10,19 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class MockProductService  implements ProductService {
     public List<Product> products;
+    public ArrayList<Product> mutableProducts;
+
 
     public MockProductService(List<Product> products) {
         this.products = products;
+        this.mutableProducts = new ArrayList<>(products);
     }
 
 
@@ -120,7 +125,9 @@ public class MockProductService  implements ProductService {
      */
     @Override
     public Product addProduct(@NotNull ProductCreateInput productCreateInput) {
-        return null;
+        Product product = new Product(productCreateInput.getName(), productCreateInput.getPrice(), productCreateInput.getCurrencyCode());
+        mutableProducts.add(product);
+        return product;
     }
 
     /**

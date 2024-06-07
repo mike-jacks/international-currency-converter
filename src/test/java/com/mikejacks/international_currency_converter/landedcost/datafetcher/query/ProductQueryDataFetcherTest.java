@@ -22,7 +22,7 @@ public class ProductQueryDataFetcherTest {
     private static @NotNull Stream<Arguments> mockProductsLists() {
         return Stream.of(
                 Arguments.of(Collections.emptyList(), "Empty list"),
-                Arguments.of(Collections.singletonList(new Product("ThermalDetonator", 100.00, "HOT")), "One item"),
+                Arguments.of(Collections.singletonList(new Product("Thermal Detonator", 100.00, "HOT")), "One item"),
                 Arguments.of(Arrays.asList(
                         new Product("LightSaber", 1000.00, "TTO"),
                         new Product("ThermalDetonator", 100.00, "HOT"),

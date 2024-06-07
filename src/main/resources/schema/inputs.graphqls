@@ -15,9 +15,11 @@ input CountryUpdateInput {
 input ProductCreateInput {
     name: String!
     price: String!
+    currencyCode: String!
 }
 
 input ProductUpdateInput {
     name: String
     price: String
+    currencyCode: String
 }

@@ -23,10 +23,7 @@ public class CountryMutationDataFetcher {
 
     @DgsMutation
     public Country addCountry(@InputArgument CountryCreateInput country) {
-        System.out.println("Received addCountry request: " + country);
-        Country result = countryService.addCountry(country);
-        System.out.println("Result of addCountry: " + result);
-        return result;
+        return countryService.addCountry(country);
     }
 
     @DgsMutation

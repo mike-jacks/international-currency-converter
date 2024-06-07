@@ -58,4 +58,14 @@ public class CountryCreateInput {
     public void setTaxRate(Double taxRate) {
         this.taxRate = taxRate;
     }
+
+    @Override
+    public String toString() {
+        return "CountryCreateInput{" +
+                "name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", dutyRate=" + dutyRate +
+                ", taxRate=" + taxRate +
+                '}';
+    }
 }

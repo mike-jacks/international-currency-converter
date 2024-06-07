@@ -1,12 +1,28 @@
 version: "3.1"
 
 services:
+  app:
+    build:
+      context: .
+      args:
+        APP_VERSION: ${APP_VERSION}
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:latest
+    env_file:
+      - .env
     environment:
-      POSTGRES_DB: currencydb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5433:5432"
     volumes:

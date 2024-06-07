@@ -66,4 +66,14 @@ public class CountryUpdateInput {
     public void setTaxRate(Double taxRate) {
         this.taxRate = taxRate;
     }
+
+    @Override
+    public String toString() {
+        return "CountryUpdateInput{" +
+                "name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", dutyRate=" + dutyRate +
+                ", taxRate=" + taxRate +
+                '}';
+    }
 }

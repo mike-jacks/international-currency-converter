@@ -37,4 +37,13 @@ public class ProductUpdateInput {
         }
         this.currencyCode = currencyCode.trim().toUpperCase();
     }
+
+    @Override
+    public String toString() {
+        return "ProductUpdateInput{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", currencyCode='" + currencyCode + '\'' +
+                '}';
+    }
 }
