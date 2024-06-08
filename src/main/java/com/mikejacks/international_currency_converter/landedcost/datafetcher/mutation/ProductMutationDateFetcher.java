@@ -15,7 +15,7 @@ import java.util.UUID;
 @DgsComponent
 public class ProductMutationDateFetcher {
 
-    private ProductService productService;
+    private final ProductService productService;
 
     @Autowired
     public ProductMutationDateFetcher(ProductService productService) {
@@ -25,6 +25,11 @@ public class ProductMutationDateFetcher {
     @DgsMutation
     public Product addProduct(@InputArgument ProductCreateInput product) {
         return productService.addProduct(product);
+    }
+
+    @DgsMutation
+    public Product updateProduct(@InputArgument UUID productId, @InputArgument String name, @InputArgument ProductUpdateInput product) {
+        return productService.updateProduct(productId, name, product);
     }
 
     @DgsMutation

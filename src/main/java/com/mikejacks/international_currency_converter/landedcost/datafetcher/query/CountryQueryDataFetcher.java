@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @DgsComponent
 public class CountryQueryDataFetcher {
-    private CountryService countryService;
+    private final CountryService countryService;
 
     @Autowired
     public CountryQueryDataFetcher(final CountryService countryService) {
@@ -25,18 +25,23 @@ public class CountryQueryDataFetcher {
     }
 
     @DgsQuery
-    public Country countryById(final @InputArgument UUID countryId) {
-        return countryService.countryById(countryId);
+    public Country country(@InputArgument final UUID countryId, @InputArgument final String name, @InputArgument final String code) {
+        return countryService.country(countryId, name, code);
     }
 
     @DgsQuery
-    public Country countryByName(final @InputArgument String name) {
-        return countryService.countryByName(name);
+    public Country countryById(@InputArgument final UUID countryId) {
+        return countryService.country(countryId, null, null);
     }
 
     @DgsQuery
-    public Country countryByCode(final @InputArgument String code) {
-        return countryService.countryByCode(code);
+    public Country countryByName(@InputArgument final String name) {
+        return countryService.country(null, name, null);
+    }
+
+    @DgsQuery
+    public Country countryByCode(@InputArgument final String code) {
+        return countryService.country(null, null, code);
     }
 
 }

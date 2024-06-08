@@ -6,6 +6,7 @@ public class LandedCost {
     public LandedCost() {
 
     }
+
     public LandedCost(Double totalCost) {
         this.setTotalCost(totalCost);
     }

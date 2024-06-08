@@ -26,11 +26,15 @@ public class Product {
 
     public Product() {}
 
-    public Product(String name, Double price, String currencyCode) {
-        this.id = UUID.randomUUID();
+    public Product(UUID id, String name, Double price, String currencyCode) {
+        this.setId(id);
         this.setName(name);
         this.setPrice(price);
         this.setCurrencyCode(currencyCode);
+    }
+
+    public Product(String name, Double price, String currencyCode) {
+        this(UUID.randomUUID(), name, price, currencyCode);
     }
 
     /**

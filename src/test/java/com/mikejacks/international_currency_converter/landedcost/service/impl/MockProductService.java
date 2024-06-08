@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,23 +23,31 @@ public class MockProductService  implements ProductService {
 
     public MockProductService(List<Product> products) {
         this.products = products;
-        this.mutableProducts = new ArrayList<>(products);
+        this.mutableProducts = new ArrayList<>();
+        for (Product product : products) {
+            this.mutableProducts.add(new Product(product.getId(), product.getName(), product.getPrice(), product.getCurrencyCode()));
+        }
     }
 
-
     /**
-     * @return
+     * @return List of Products
      */
     @Override
     public List<Product> products() {
         return products;
     }
 
-    /**
+     /**
+     * Retrieves a product by its id or name.
      *
-     * @param productId
-     * @param name
-     * @return
+     * <p>Note: Only one of the parameters should be provided. If both are provided,
+     * an InvalidParameterException will be thrown. If neither is provided, the same
+     * exception will be thrown.</p>
+     *
+     * @param productId the ID of the product (can be null if name is provided)
+     * @param name the name of the product (can be null if productId is provided)
+     * @return a product object if found, else null
+     * @throws InvalidParameterException if both productId and name are provided, or if neither is provided
      */
     @Override
     public Product product(UUID productId, String name) {
@@ -112,7 +121,7 @@ public class MockProductService  implements ProductService {
     /**
      * @param minPrice
      * @param maxPrice
-     * @return
+     * @return List of products
      */
     @Override
     public List<Product> productsByPriceBetween(@NotNull Double minPrice, @NotNull Double maxPrice) {
@@ -131,14 +140,30 @@ public class MockProductService  implements ProductService {
     }
 
     /**
-     * @param id
+     * @param productId
      * @param name
      * @param productUpdateInput
      * @return
      */
     @Override
-    public Product updateProduct(UUID id, String name, @NotNull ProductUpdateInput productUpdateInput) {
-        return null;
+    public Product updateProduct(UUID productId, String name, @NotNull ProductUpdateInput productUpdateInput) {
+        Product existingProduct;
+        if (productId != null && name == null) {
+            existingProduct = mutableProducts.stream().filter(product -> product.getId().equals(productId)).findFirst().orElseThrow(() -> new RuntimeException("Product with id " + productId + " not found."));
+        } else if (productId == null && name != null) {
+            existingProduct= mutableProducts.stream().filter(product -> product.getName().equals(name)).findFirst().orElseThrow(() -> new RuntimeException("Product with name " + name + " not found."));
+        } else if (productId == null && name == null) {
+            throw new IllegalArgumentException("No arguments present. You must have only one of the following arguments: productId, name, or code");
+        } else {
+            throw new IllegalArgumentException("Too many arguments present. You must have only one of the following arguments: productId, name, or code");
+        }
+        if (productUpdateInput.getName() != null) {
+            existingProduct.setName(productUpdateInput.getName());
+        }
+        if (productUpdateInput.getPrice() != null) {
+            existingProduct.setPrice(productUpdateInput.getPrice());
+        }
+        return existingProduct;
     }
 
     /**
@@ -147,6 +172,12 @@ public class MockProductService  implements ProductService {
      */
     @Override
     public DeleteItemResponse deleteProductById(@NotNull UUID productId) {
-        return null;
+        Optional<Product> existingProductOptional = mutableProducts.stream().filter(product -> product.getId().equals(productId)).findFirst();
+        if (existingProductOptional.isEmpty()) {
+            return new DeleteItemResponse(false, String.format("unable to find country with the id %s", productId), null);
+        }
+        Product existingProduct =  existingProductOptional.get();
+        mutableProducts.remove(existingProduct);
+        return new DeleteItemResponse(true, String.format("'%s' has been successfully deleted.", existingProduct.getName()), productId);
     }
 }

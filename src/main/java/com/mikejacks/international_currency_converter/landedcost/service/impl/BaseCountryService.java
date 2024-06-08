@@ -19,7 +19,6 @@ public class BaseCountryService implements CountryService {
 
     private final CountryRepository countryRepository;
 
-
     @Autowired
     public BaseCountryService(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
@@ -30,21 +29,25 @@ public class BaseCountryService implements CountryService {
         return countryRepository.findAll();
     }
 
-    @Override public Country countryById(final @NotNull UUID countryId) {
-        return countryRepository.findById(countryId).orElse(null);
+    @Override public Country country(final UUID countryId, final String name, final String code) {
+        if (countryId != null && name == null && code == null) {
+            return countryRepository.findCountryById(countryId).orElse(null);
+        }
+        if (countryId == null && name != null && code == null) {
+            return countryRepository.findCountryByName(name).orElse(null);
+        }
+        if (countryId == null && name == null && code != null) {
+            return countryRepository.findCountryByCode(code).orElse(null);
+        }
+        if (countryId == null && name == null && code == null) {
+            throw new IllegalArgumentException("No arguments present. You must have only one of the following arguments: countryId, name, or code");
+        } else {
+            throw new IllegalArgumentException("Too many arguments present. You must have only one of the following arguments: countryId, name, or code");
+        }
     }
-
-    @Override public Country countryByName(final @NotNull String name) {
-        return countryRepository.findCountryByName(name).orElse(null);
-    }
-
-    @Override public Country countryByCode(final @NotNull String code) {
-        return countryRepository.findCountryByCode(code).orElseThrow();
-    }
-
 
     // Mutation Services
-    @Override public Country addCountry(final @NotNull CountryCreateInput countryCreateInput) {
+    @Override public Country addCountry(@NotNull final CountryCreateInput countryCreateInput) {
         System.out.println("Adding country: " + countryCreateInput);
         Country newCountry = new Country(
                 countryCreateInput.getName(),

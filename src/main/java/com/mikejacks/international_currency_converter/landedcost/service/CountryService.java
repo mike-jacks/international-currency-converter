@@ -13,11 +13,7 @@ public interface CountryService {
     // Query Services
     List<Country> countries();
 
-    Country countryById(@NotNull UUID countryId);
-
-    Country countryByName(@NotNull String name);
-
-    Country countryByCode(@NotNull String code);
+    Country country(UUID countryId, String name, String code);
 
     // Mutation Services
     Country addCountry(@NotNull CountryCreateInput countryCreateInput);

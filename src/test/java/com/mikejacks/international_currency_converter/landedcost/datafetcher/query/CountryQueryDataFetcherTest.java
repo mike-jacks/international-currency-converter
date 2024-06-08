@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class CountryQueryDataFetcherTest {
@@ -39,6 +40,35 @@ public class CountryQueryDataFetcherTest {
         CountryQueryDataFetcher countryQueryDataFetcher = new CountryQueryDataFetcher(countryService);
         List<Country> result = countryQueryDataFetcher.countries();
         assertEquals(expectedCountries.size(), result.size());
+    }
+
+    @ParameterizedTest(name = "{1}")
+    @MethodSource("mockCountriesList")
+    void testCountry(List<Country> expectedCountries, String testName) {
+        MockCountryService countryService = new MockCountryService(expectedCountries);
+        CountryQueryDataFetcher countryQueryDataFetcher = new CountryQueryDataFetcher(countryService);
+        if (expectedCountries.isEmpty()) {
+           Country resultById = countryQueryDataFetcher.country(UUID.randomUUID(), null, null);
+           assertEquals(null, resultById);
+           Country resultByName = countryQueryDataFetcher.country(null, "Tatooine", null);
+           assertEquals(null, resultByName);
+           Country resultByCode = countryQueryDataFetcher.country(null, null, "TTO");
+           assertEquals(null, resultByCode);
+        } else {
+            Country expectedCountry = expectedCountries.get(0);
+            Country resultById = countryQueryDataFetcher.country(expectedCountry.getId(), null, null);
+            Country resultByName = countryQueryDataFetcher.country(null, expectedCountry.getName(), null);
+            Country resultByCode = countryQueryDataFetcher.country(null, null, expectedCountry.getCode());
+
+            IllegalArgumentException nullArgsException = assertThrows(IllegalArgumentException.class, () -> countryQueryDataFetcher.country(null, null, null));
+            IllegalArgumentException manyArgsException = assertThrows(IllegalArgumentException.class, () -> countryQueryDataFetcher.country(UUID.randomUUID(), "Tatooine", "TTO"));
+            assertEquals("Too many arguments present. You must have only one of the following arguments: countryId, name, or code", manyArgsException.getMessage());
+            assertEquals("No arguments present. You must have only one of the following arguments: countryId, name, or code",  nullArgsException.getMessage());
+            assertEquals(expectedCountry, resultById);
+            assertEquals(expectedCountry, resultByName);
+            assertEquals(expectedCountry, resultByCode);
+        }
+
     }
 
     @ParameterizedTest(name = "{1}")

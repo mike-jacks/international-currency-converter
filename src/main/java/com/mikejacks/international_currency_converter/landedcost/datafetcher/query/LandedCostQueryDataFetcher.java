@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.UUID;
 
 @DgsComponent
-public class LandedCostDataFetcher {
+public class LandedCostQueryDataFetcher {
 
     private LandedCostService landedCostService;
 
     @Autowired
-    public LandedCostDataFetcher(LandedCostService landedCostService) {
+    public LandedCostQueryDataFetcher(LandedCostService landedCostService) {
         this.landedCostService = landedCostService;
     }
 

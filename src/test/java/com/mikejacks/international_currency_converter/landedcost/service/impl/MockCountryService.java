@@ -21,7 +21,10 @@ public class MockCountryService implements CountryService {
 
     public MockCountryService(List<Country> countries) {
        this.countries = countries;
-       this.mutableCountries = new ArrayList<>(countries);
+       this.mutableCountries = new ArrayList<>();
+       for (Country country : countries) {
+           this.mutableCountries.add(new Country(country.getId(), country.getName(), country.getCode(), country.getDutyRate(), country.getTaxRate()));
+       }
     }
 
     @Override
@@ -30,34 +33,23 @@ public class MockCountryService implements CountryService {
     }
 
     @Override
-    public Country countryById(@NotNull UUID countryId) {
-        for (Country country : countries) {
-            if (country.getId().equals(countryId)) {
-                return country;
-            }
+    public Country country(UUID countryId, String name, String code) {
+        if (countryId != null && name == null && code == null) {
+            return countries.stream().filter((country) -> country.getId().equals(countryId)).findFirst().orElse(null);
         }
-        return null;
+        if (countryId == null && name != null && code == null) {
+            return countries.stream().filter((country) -> country.getName().equals(name)).findFirst().orElse(null);
+        }
+        if (countryId == null && name == null && code != null) {
+            return countries.stream().filter((country) -> country.getCode().equals(code)).findFirst().orElse(null);
+        }
+        if (countryId == null && name == null && code == null) {
+            throw new IllegalArgumentException("No arguments present. You must have only one of the following arguments: countryId, name, or code");
+        } else {
+            throw new IllegalArgumentException("Too many arguments present. You must have only one of the following arguments: countryId, name, or code");
+        }
     }
 
-    @Override
-    public Country countryByName(@NotNull String name) {
-        for (Country country : countries) {
-            if (country.getName().equals(name)) {
-                return country;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Country countryByCode(@NotNull String code) {
-        for (Country country : countries) {
-            if (country.getCode().equals(code)) {
-                return country;
-            }
-        }
-        return null;
-    }
 
     @Override
     public Country addCountry(@NotNull CountryCreateInput countryCreateInput) {

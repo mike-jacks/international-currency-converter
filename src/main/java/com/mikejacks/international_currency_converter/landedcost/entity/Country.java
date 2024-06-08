@@ -29,12 +29,22 @@ public class Country {
     @Column(nullable = false)
     private Double taxRate;
 
+    /**
+     *
+     */
     public Country() {
         this.id = UUID.randomUUID();
     }
 
+    /**
+     *
+     * @param id the Country id
+     * @param name the Country ame
+     * @param code the Country Currency Code
+     * @param dutyRate the Country duty rate
+     * @param taxRate the Country tax rate
+     */
     public Country(UUID id, String name, String code, Double dutyRate, Double taxRate) {
-        this.id = UUID.randomUUID();
         this.setId(id);
         this.setName(name);
         this.setCode(code);
@@ -42,6 +52,13 @@ public class Country {
         this.setTaxRate(taxRate);
     }
 
+    /**
+     *
+     * @param name the Country name
+     * @param code the Country Currency Code
+     * @param dutyRate the Country duty rate
+     * @param taxRate the Country tax rate
+     */
     public Country(String name, String code, Double dutyRate, Double taxRate) {
         this(UUID.randomUUID(), name, code, dutyRate, taxRate);
     }

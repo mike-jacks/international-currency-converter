@@ -67,14 +67,16 @@ public class BaseProductService implements ProductService {
         return productRepository.save(newProduct);
     }
 
-    @Override public Product updateProduct(UUID id, String name, @NotNull ProductUpdateInput productUpdateInput) {
+    @Override public Product updateProduct(UUID productId, String name, @NotNull ProductUpdateInput productUpdateInput) {
         Product existingProduct;
-        if (id != null) {
-           existingProduct = productRepository.findProductById(id).orElseThrow(() -> new RuntimeException("Product not found"));
-        } else if (name != null) {
-           existingProduct = productRepository.findProductByName(name).orElseThrow(() -> new RuntimeException("Product not found"));
+        if (productId != null && name == null) {
+            existingProduct = productRepository.findProductById(productId).orElseThrow(() -> new RuntimeException("Product with id " + productId + " not found."));
+        } else if (productId == null && name != null) {
+            existingProduct = productRepository.findProductByName(name).orElseThrow(() -> new RuntimeException("Product with name " + name + " not found."));
+        } else if (productId == null && name == null) {
+            throw new IllegalArgumentException("No arguments present. You must have only one of the following arguments: productId, name, or code");
         } else {
-            throw new RuntimeException("Either id or name must be provided");
+            throw new IllegalArgumentException("Too many arguments present. You must have only one of the following arguments: productId, name, or code");
         }
         if (productUpdateInput.getName() != null) {
             existingProduct.setName(productUpdateInput.getName());
