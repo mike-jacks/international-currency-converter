@@ -27,8 +27,13 @@ public class CountryMutationDataFetcher {
     }
 
     @DgsMutation
-    public Country updateCountryById(@InputArgument UUID id, @InputArgument CountryUpdateInput country) {
-        return countryService.updateCountry(id, null, country);
+    public Country updateCountry(@InputArgument UUID countryId, @InputArgument String name, @InputArgument CountryUpdateInput country) {
+        return countryService.updateCountry(countryId, name, country);
+    }
+
+    @DgsMutation
+    public Country updateCountryById(@InputArgument UUID countryId, @InputArgument CountryUpdateInput country) {
+        return countryService.updateCountry(countryId, null, country);
     }
 
     @DgsMutation
@@ -37,7 +42,7 @@ public class CountryMutationDataFetcher {
     }
 
     @DgsMutation
-    public DeleteItemResponse deleteCountryById(@InputArgument UUID id) {
-        return countryService.deleteCountryById(id);
+    public DeleteItemResponse deleteCountryById(@InputArgument UUID countryId) {
+        return countryService.deleteCountryById(countryId);
     }
 }

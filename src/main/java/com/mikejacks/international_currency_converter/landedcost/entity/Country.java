@@ -19,14 +19,15 @@ public class Country {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(nullable = false, updatable = false)
     private UUID id;
-    @Column(nullable = false)
+    @Column()
     private String name;
-    @Column(nullable = false, length = 3)
+    @Column(length = 3)
     private String code;
-    @Column(nullable = false)
+    @Column()
     private Double dutyRate;
-    @Column(nullable = false)
+    @Column()
     private Double taxRate;
 
     /**

@@ -1,0 +1,3 @@
+ALTER TABLE country DROP COLUMN IF EXISTS dutrate;
+
+

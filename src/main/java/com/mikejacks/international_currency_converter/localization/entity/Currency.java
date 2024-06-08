@@ -23,13 +23,13 @@ public class Currency {
     @Column(nullable = false, updatable = false)
     private UUID id;
 
-    @Column(nullable = false, length = 3)
+    @Column(length = 3)
     private String baseCode;
 
-    @Column(nullable = false, length = 3)
+    @Column(length = 3)
     private String targetCode;
 
-    @Column(nullable = false)
+    @Column()
     private Double conversionRate;
 
     public Currency() {

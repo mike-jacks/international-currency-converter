@@ -1,4 +1,4 @@
-package com.mikejacks.international_currency_converter.landedcost.model;
+package com.mikejacks.international_currency_converter.localization.model;
 
 public class Currency {
     private String baseCode;

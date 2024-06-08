@@ -12,6 +12,8 @@ import com.mikejacks.international_currency_converter.localization.repository.Cu
 
 @SpringBootApplication
 public class InternationalCurrencyConverterApplication {
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(InternationalCurrencyConverterApplication.class, args);
 	}
@@ -19,9 +21,11 @@ public class InternationalCurrencyConverterApplication {
 	@Bean
 	CommandLineRunner init(CurrencyRepository currencyRepository, CountryRepository countryRepository) {
 		return args -> {
+
+
 			// Clear existing entries
-//            countryRepository.deleteAll();
-//            currencyRepository.deleteAll();
+             countryRepository.deleteAll();
+             currencyRepository.deleteAll();
 
             // Add countries (if necessary)
             if (countryRepository.count() == 0) {
@@ -35,20 +39,20 @@ public class InternationalCurrencyConverterApplication {
 
             if (currencyRepository.count() == 0) {
                 // Add new currency conversion rates
-                currencyRepository.save(new Currency(null, "EUR", "USD", 1.10));
-                currencyRepository.save(new Currency(null, "USD", "EUR", 0.91));
+                currencyRepository.save(new Currency("EUR", "USD", 1.10));
+                currencyRepository.save(new Currency("USD", "EUR", 0.91));
 
-                currencyRepository.save(new Currency(null, "GBP", "USD", 1.25));
-                currencyRepository.save(new Currency(null, "USD", "GBP", 0.80));
+                currencyRepository.save(new Currency("GBP", "USD", 1.25));
+                currencyRepository.save(new Currency("USD", "GBP", 0.80));
 
-                currencyRepository.save(new Currency(null, "JPY", "USD", 0.0072));
-                currencyRepository.save(new Currency(null, "USD", "JPY", 138.89));
+                currencyRepository.save(new Currency("JPY", "USD", 0.0072));
+                currencyRepository.save(new Currency("USD", "JPY", 138.89));
 
-                currencyRepository.save(new Currency(null, "CHF", "USD", 1.10));
-                currencyRepository.save(new Currency(null, "USD", "CHF", 0.91));
+                currencyRepository.save(new Currency("CHF", "USD", 1.10));
+                currencyRepository.save(new Currency("USD", "CHF", 0.91));
 
-                currencyRepository.save(new Currency(null, "CAD", "USD", 0.74));
-                currencyRepository.save(new Currency(null, "USD", "CAD", 1.35));
+                currencyRepository.save(new Currency("CAD", "USD", 0.74));
+                currencyRepository.save(new Currency("USD", "CAD", 1.35));
             }
 		};
 	}

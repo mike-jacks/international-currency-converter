@@ -10,7 +10,6 @@ COPY pom.xml .
 COPY src ./src
 COPY .env .env
 
-ARG APP_VERSION
 # Package the application
 RUN mvn clean package
 
@@ -18,7 +17,6 @@ RUN mvn clean package
 FROM openjdk:21-jdk-slim
 
 # Set the working directory inside the container
-ARG APP_VERSION
 WORKDIR /app
 
 # Copy the jar file from the build stage

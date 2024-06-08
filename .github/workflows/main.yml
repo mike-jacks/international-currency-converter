@@ -38,12 +38,20 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
-      - name: Deploy to Railway
-        uses: railwayapp/railway-action@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          project_id: ${{ secrets.RAILWAY_PROJECT_ID }}
-          environment_id: ${{ secrets.RAILWAY_ENVIRONMENT_ID }}
-          service_id: ${{ secrets.RAILWAY_SERVICE_ID }}
-          build_command: 'mvn clean package'
-          start_command: 'java -jar target/international-currency-converter-0.0.1-SNAPSHOT.jar'
-          dockerfile: Dockerfile
+          node-version: 20
+
+      - name: Install Railway CLI
+        run: npm i -g @railway/cli
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+          RAILWAY_ENVIRONMENT_ID: ${{ secrets.RAILWAY_ENVIRONMENT_ID }}
+          RAILWAY_SERVICE_ID: ${{ secrets.RAILWAY_SERVICE_ID }}
+        run: railway up --service=$RAILWAY_SERVICE_ID
+
+
