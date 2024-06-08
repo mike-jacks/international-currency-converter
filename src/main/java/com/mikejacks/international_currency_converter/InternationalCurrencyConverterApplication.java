@@ -24,8 +24,8 @@ public class InternationalCurrencyConverterApplication {
 
 
 			// Clear existing entries
-             countryRepository.deleteAll();
-             currencyRepository.deleteAll();
+            //countryRepository.deleteAll();
+            //currencyRepository.deleteAll();
 
             // Add countries (if necessary)
             if (countryRepository.count() == 0) {
