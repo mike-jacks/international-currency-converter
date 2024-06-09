@@ -4,7 +4,6 @@ import com.mikejacks.international_currency_converter.localization.model.Currenc
 import com.mikejacks.international_currency_converter.localization.model.CurrencyUpdateInput;
 import com.mikejacks.international_currency_converter.localization.service.CurrencyService;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +12,11 @@ import org.springframework.stereotype.Service;
 import com.mikejacks.international_currency_converter.localization.entity.Currency;
 import com.mikejacks.international_currency_converter.localization.repository.CurrencyRepository;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +29,7 @@ public class BaseCurrencyService implements CurrencyService {
     private String FREECURRENCY_API_URL_HOST;
 
 
-    private CurrencyRepository currencyRepository;
+    private final CurrencyRepository currencyRepository;
 
     @Autowired
     public BaseCurrencyService(CurrencyRepository currencyRepository) {
@@ -171,31 +171,20 @@ public class BaseCurrencyService implements CurrencyService {
     }
 
     private @NotNull String getJsonResponse(String urlString) throws Exception {
-        URL url = new URL(urlString);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Content-Type", "application/json");
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(new URI(urlString)).header("Content-Type", "application/json").build();
 
-        int responseCode = connection.getResponseCode();
-        if (responseCode != 200) {
-            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
         }
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuilder content = new StringBuilder();
-        while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
-        }
-        in.close();
-        connection.disconnect();
-
-        return content.toString();
+        return response.body();
     }
 
     private JSONObject parseJsonResponse(String jsonResponse) throws Exception {
         JSONObject jsonObject = new JSONObject(jsonResponse);
-        JSONObject dataObject = jsonObject.getJSONObject("data");
-        return dataObject;
+        return jsonObject.getJSONObject("data");
     }
 }
