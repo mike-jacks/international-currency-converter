@@ -101,6 +101,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20240303</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>me.paulschwarz</groupId>
@@ -110,9 +117,11 @@
 
 
 
+		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
+			<version>4.1.2</version>
 		</dependency>
 
 
@@ -205,16 +214,6 @@
 		</plugins>
 	</build>
 
-	<profiles>
-		<profile>
-			<id>local</id>
-			<properties>
-				<spring.profiles.active>local</spring.profiles.active>
-			</properties>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-		</profile>
-	</profiles>
+
 
 </project>
