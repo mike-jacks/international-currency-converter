@@ -23,3 +23,15 @@ input ProductUpdateInput {
     price: String
     currencyCode: String
 }
+
+input CurrencyCreateInput {
+    baseCode: String!
+    targetCode: String!
+    conversionRate: Float!
+}
+
+input CurrencyUpdateInput {
+    baseCode: String
+    targetCode: String
+    conversionRate: Float
+}

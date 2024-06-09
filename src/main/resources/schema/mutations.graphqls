@@ -12,4 +12,9 @@ type Mutation {
     updateProductById(productId: UUID!, product: ProductUpdateInput!): Product
     updateProductByName(name: String! product: ProductUpdateInput!): Product
     deleteProductById(productId: UUID!): DeleteItemResponse
+
+    # Mutate Currencies
+    addCurrency(currency: CurrencyCreateInput!): Currency
+    updateCurrencyById(currencyId: UUID!, currency: CurrencyUpdateInput!): Currency
+
 }
