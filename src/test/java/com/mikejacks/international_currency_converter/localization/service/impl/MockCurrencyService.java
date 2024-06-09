@@ -136,4 +136,9 @@ public class MockCurrencyService implements CurrencyService {
         return existingCurrency;
 
     }
+
+    @Override
+    public Currency updateCurrencyRateToLiveById(UUID currencyId) {
+        return new Currency();
+    }
 }

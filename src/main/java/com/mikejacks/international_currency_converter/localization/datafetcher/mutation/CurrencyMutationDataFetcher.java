@@ -53,4 +53,9 @@ public class CurrencyMutationDataFetcher {
     public Currency updateCurrencyById(@InputArgument UUID currencyId, @InputArgument CurrencyUpdateInput currency) {
         return currencyService.updateCurrencyById(currencyId, currency);
     }
+
+    @DgsMutation
+    public Currency updateCurrencyRateToLiveById(@InputArgument UUID currencyId) {
+        return currencyService.updateCurrencyRateToLiveById(currencyId);
+    }
 }

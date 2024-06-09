@@ -4,17 +4,30 @@ import com.mikejacks.international_currency_converter.localization.model.Currenc
 import com.mikejacks.international_currency_converter.localization.model.CurrencyUpdateInput;
 import com.mikejacks.international_currency_converter.localization.service.CurrencyService;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.mikejacks.international_currency_converter.localization.entity.Currency;
 import com.mikejacks.international_currency_converter.localization.repository.CurrencyRepository;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class BaseCurrencyService implements CurrencyService {
+    @Value("${FREECURRENCY_API_KEY}")
+    private String FREECURRENCY_API_KEY;
+
+    @Value("${FREECURRENCY_API_URL_HOST}")
+    private String FREECURRENCY_API_URL_HOST;
+
 
     private CurrencyRepository currencyRepository;
 
@@ -95,7 +108,7 @@ public class BaseCurrencyService implements CurrencyService {
      * @throws IllegalArgumentException if a currency with the same base code and target code already exists.
      */
     @Override
-    public Currency addCurrency(CurrencyCreateInput currencyCreateInput) {
+    public Currency addCurrency(@NotNull CurrencyCreateInput currencyCreateInput) {
         Currency newCurrency = new Currency(currencyCreateInput.getBaseCode(), currencyCreateInput.getTargetCode(), currencyCreateInput.getConversionRate());
         Currency existingCurrency = currencyRepository.findCurrenciesByBaseCodeAndTargetCode(currencyCreateInput.getBaseCode(), currencyCreateInput.getTargetCode()).orElse(null);
         if (existingCurrency != null) {
@@ -133,5 +146,56 @@ public class BaseCurrencyService implements CurrencyService {
            existingCurrency.setConversionRate(currencyUpdateInput.getConversionRate());
        }
        return currencyRepository.save(existingCurrency);
+    }
+
+    @Override
+    public Currency updateCurrencyRateToLiveById(UUID currencyId) {
+       Currency existingCurrency = currencyRepository.findById(currencyId).orElse(null);
+       if (existingCurrency == null) {
+           throw new IllegalArgumentException("Currency with id " + currencyId + " does not exist.");
+       }
+       String baseCode = existingCurrency.getBaseCode();
+       String targetCode = existingCurrency.getTargetCode();
+       String urlString = FREECURRENCY_API_URL_HOST + FREECURRENCY_API_KEY + "&base_currency=" + baseCode + "&currencies=" + targetCode;
+
+       try {
+           String response = getJsonResponse(urlString);
+           JSONObject responseData = parseJsonResponse(response);
+           Double liveConversionRate = responseData.getDouble(targetCode);
+           existingCurrency.setConversionRate(liveConversionRate);
+           return currencyRepository.save(existingCurrency);
+       } catch (Exception e) {
+           e.printStackTrace();
+           throw new RuntimeException("Failed to update currency to live rate: " + e.getMessage());
+       }
+    }
+
+    private @NotNull String getJsonResponse(String urlString) throws Exception {
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        }
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String inputLine;
+        StringBuilder content = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        connection.disconnect();
+
+        return content.toString();
+    }
+
+    private JSONObject parseJsonResponse(String jsonResponse) throws Exception {
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        JSONObject dataObject = jsonObject.getJSONObject("data");
+        return dataObject;
     }
 }

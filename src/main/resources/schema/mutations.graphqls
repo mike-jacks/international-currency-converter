@@ -16,5 +16,6 @@ type Mutation {
     # Mutate Currencies
     addCurrency(currency: CurrencyCreateInput!): Currency
     updateCurrencyById(currencyId: UUID!, currency: CurrencyUpdateInput!): Currency
+    updateCurrencyRateToLiveById(currencyId: UUID!): Currency
 
 }

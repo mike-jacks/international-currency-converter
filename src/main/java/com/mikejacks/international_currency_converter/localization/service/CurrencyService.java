@@ -13,4 +13,5 @@ public interface CurrencyService {
     List<Currency> currencies(String baseCode, String targetCode);
     Currency addCurrency(CurrencyCreateInput currency);
     Currency updateCurrencyById(UUID currencyId, CurrencyUpdateInput currency);
+    Currency updateCurrencyRateToLiveById(UUID currencyId);
 }
