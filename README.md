@@ -216,4 +216,4 @@ Below are some of the GraphQL Queries you can do.
      }
    }
    ```
-Please see the documentation on the \`graphiql`\ interactive page for more query/mutation options.
+Please see the documentation on the \`graphiql\` interactive page for more query/mutation options.
