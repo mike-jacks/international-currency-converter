@@ -38,7 +38,7 @@
 			<artifactId>graphql-dgs-spring-graphql-starter</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>6.5.2.Final</version>
 		</dependency>
@@ -63,11 +63,13 @@
 			<version>5.7.0</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>6.0.13.Final</version>
+			<version>8.0.1.Final</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.el</artifactId>
@@ -202,5 +204,17 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>local</id>
+			<properties>
+				<spring.profiles.active>local</spring.profiles.active>
+			</properties>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
 
 </project>
