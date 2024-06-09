@@ -17,9 +17,19 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Unit tests for {@code CurrencyQueryDataFetcher}.
+ *
+ * <p>This class tests the various query methods of the {@code CurrencyQueryDataFetcher} class using mock data.</p>
+ */
 @ExtendWith(MockitoExtension.class)
 class CurrencyQueryDataFetcherTest {
 
+    /**
+     * Provides mock currency lists for parameterized tests.
+     *
+     * @return A stream of arguments containing mock currency lists and test names.
+     */
     private static @NotNull Stream<Arguments> mockCurrenciesLists() {
         return Stream.of(
                 Arguments.of( Arrays.asList(
@@ -33,15 +43,75 @@ class CurrencyQueryDataFetcherTest {
         );
     }
 
+    /**
+     * Tests the {@code currency} method of {@code CurrencyQueryDataFetcher}.
+     *
+     * @param expectedCurrencies The expected list of currencies.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockCurrenciesLists")
-    void testGetCurrency(List<Currency> expectedCurrencies, String testName) {
+    void testCurrency(List<Currency> expectedCurrencies, String testName) {
         MockCurrencyService currencyService = new MockCurrencyService(expectedCurrencies);
         CurrencyQueryDataFetcher currencyQueryDataFetcher = new CurrencyQueryDataFetcher(currencyService);
         Currency expectedCurrency = expectedCurrencies.get(0);
-        Currency results = currencyQueryDataFetcher.getCurrency(expectedCurrency.getBaseCode(), expectedCurrency.getTargetCode());
+        Currency results = currencyQueryDataFetcher.currency(expectedCurrency.getBaseCode(), expectedCurrency.getTargetCode());
         assertEquals(Currency.class, results.getClass());
         assertEquals(expectedCurrency.getBaseCode(), results.getBaseCode());
         assertEquals(expectedCurrency.getTargetCode(), results.getTargetCode());
     }
+
+    /**
+     * Tests the {@code currencies} method of {@code CurrencyQueryDataFetcher}.
+     *
+     * @param expectedCurrencies The expected list of currencies.
+     * @param testName The name of the test.
+     */
+    @ParameterizedTest(name = "{1}")
+    @MethodSource("mockCurrenciesLists")
+    void testCurrencies(List<Currency> expectedCurrencies, String testName) {
+        MockCurrencyService currencyService = new MockCurrencyService(expectedCurrencies);
+        CurrencyQueryDataFetcher currencyQueryDataFetcher = new CurrencyQueryDataFetcher(currencyService);
+        List<Currency> results = currencyQueryDataFetcher.currencies(null, null);
+        assertEquals(Currency.class, results.get(0).getClass());
+        assertEquals(expectedCurrencies.get(0).getId(), results.get(0).getId());
+    }
+
+    /**
+     * Tests the {@code currenciesByBaseCode} method of {@code CurrencyQueryDataFetcher}.
+     *
+     * @param expectedCurrencies The expected list of currencies.
+     * @param testName The name of the test.
+     */
+    @ParameterizedTest(name = "{1}")
+    @MethodSource("mockCurrenciesLists")
+    void testCurrenciesByBaseCode(List<Currency> expectedCurrencies, String testName) {
+        MockCurrencyService currencyService = new MockCurrencyService(expectedCurrencies);
+        CurrencyQueryDataFetcher currencyQueryDataFetcher = new CurrencyQueryDataFetcher(currencyService);
+        List<Currency> results = currencyQueryDataFetcher.currenciesByBaseCode(expectedCurrencies.get(0).getBaseCode());
+        assertEquals(Currency.class, results.get(0).getClass());
+        assertEquals(expectedCurrencies.get(0).getId(), results.get(0).getId());
+        assertEquals(2, results.size());
+    }
+
+    /**
+     * Tests the {@code currenciesByTargetCode} method of {@code CurrencyQueryDataFetcher}.
+     *
+     * @param expectedCurrencies The expected list of currencies.
+     * @param testName The name of the test.
+     */
+    @ParameterizedTest(name = "{1}")
+    @MethodSource("mockCurrenciesLists")
+    void testCurrenciesByTargetCode(List<Currency> expectedCurrencies, String testName) {
+        MockCurrencyService currencyService = new MockCurrencyService(expectedCurrencies);
+        CurrencyQueryDataFetcher currencyQueryDataFetcher = new CurrencyQueryDataFetcher(currencyService);
+        List<Currency> results = currencyQueryDataFetcher.currenciesByTargetCode(expectedCurrencies.get(0).getTargetCode());
+        assertEquals(Currency.class, results.get(0).getClass());
+        assertEquals(expectedCurrencies.get(0).getId(), results.get(0).getId());
+        assertEquals(2, results.size());
+    }
+
+
+
+
 }

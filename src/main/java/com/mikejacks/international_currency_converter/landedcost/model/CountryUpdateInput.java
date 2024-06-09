@@ -1,6 +1,8 @@
 package com.mikejacks.international_currency_converter.landedcost.model;
 
+
 import com.mikejacks.international_currency_converter.landedcost.entity.Country;
+import org.jetbrains.annotations.NotNull;
 
 public class CountryUpdateInput {
     private String name;
@@ -22,14 +24,18 @@ public class CountryUpdateInput {
     }
 
     public CountryUpdateInput(String name, String code) {
-        this(name, code, null, null);
+        this(name, code, null);
     }
 
     public CountryUpdateInput(String name) {
-        this.setName(name);
-        this.code = null;
-        this.setDutyRate(null);
-        this.setTaxRate(null);
+        this(name, null);
+    }
+
+    public CountryUpdateInput(@NotNull Country country) {
+        this.setName(country.getName());
+        this.setCode(country.getCode());
+        this.setDutyRate(country.getDutyRate());
+        this.setTaxRate(country.getTaxRate());
     }
 
     public String getName() {
