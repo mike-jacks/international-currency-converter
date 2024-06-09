@@ -1,6 +1,5 @@
 package com.mikejacks.international_currency_converter.landedcost.service.impl;
 
-import com.mikejacks.international_currency_converter.landedcost.entity.Country;
 import com.mikejacks.international_currency_converter.landedcost.entity.Product;
 import com.mikejacks.international_currency_converter.landedcost.model.DeleteItemResponse;
 import com.mikejacks.international_currency_converter.landedcost.model.ProductCreateInput;
@@ -15,12 +14,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Mock implementation of the ProductService interface.
+ * This service provides methods for managing products including adding, updating, retrieving, and deleting products.
+ */
 @Service
 public class MockProductService  implements ProductService {
     public List<Product> products;
     public ArrayList<Product> mutableProducts;
 
 
+    /**
+     * Constructor for MockProductService.
+     * Initializes the service with a list of products and creates a mutable copy of the product list.
+     *
+     * @param products List of initial products
+     */
     public MockProductService(List<Product> products) {
         this.products = products;
         this.mutableProducts = new ArrayList<>();
@@ -30,6 +39,8 @@ public class MockProductService  implements ProductService {
     }
 
     /**
+     * Retrieves the list of all products.
+     *
      * @return List of Products
      */
     @Override
@@ -37,15 +48,15 @@ public class MockProductService  implements ProductService {
         return products;
     }
 
-     /**
-     * Retrieves a product by its id or name.
+    /**
+     * Retrieves a product by its ID or name.
      *
      * <p>Note: Only one of the parameters should be provided. If both are provided,
      * an InvalidParameterException will be thrown. If neither is provided, the same
      * exception will be thrown.</p>
      *
      * @param productId the ID of the product (can be null if name is provided)
-     * @param name the name of the product (can be null if productId is provided)
+     * @param name      the name of the product (can be null if productId is provided)
      * @return a product object if found, else null
      * @throws InvalidParameterException if both productId and name are provided, or if neither is provided
      */
@@ -73,8 +84,10 @@ public class MockProductService  implements ProductService {
     }
 
     /**
-     * @param id
-     * @return
+     * Retrieves a product by its ID.
+     *
+     * @param id the ID of the product
+     * @return a product object if found, else null
      */
     @Override
     public Product productById(@NotNull UUID id) {
@@ -87,8 +100,10 @@ public class MockProductService  implements ProductService {
     }
 
     /**
-     * @param name
-     * @return
+     * Retrieves a product by its name.
+     *
+     * @param name the name of the product
+     * @return a product object if found, else null
      */
     @Override
     public Product productByName(@NotNull String name) {
@@ -101,8 +116,10 @@ public class MockProductService  implements ProductService {
     }
 
     /**
-     * @param maxPrice
-     * @return
+     * Retrieves a list of products with prices less than or equal to the specified maximum price.
+     *
+     * @param maxPrice the maximum price
+     * @return a list of products with prices less than or equal to the max price
      */
     @Override
     public List<Product> productsByPriceLessThanOrEqualTo(@NotNull Double maxPrice) {
@@ -110,8 +127,10 @@ public class MockProductService  implements ProductService {
     }
 
     /**
-     * @param minPrice
-     * @return
+     * Retrieves a list of products with prices greater than or equal to the specified minimum price.
+     *
+     * @param minPrice the minimum price
+     * @return a list of products with prices greater than or equal to the min price
      */
     @Override
     public List<Product> productsByPriceGreaterThanOrEqualTo(@NotNull Double minPrice) {
@@ -119,8 +138,10 @@ public class MockProductService  implements ProductService {
     }
 
     /**
-     * @param minPrice
-     * @param maxPrice
+     * Retrieves a list of products with prices between the specified minimum and maximum prices.
+     *
+     * @param minPrice the minimum price
+     * @param maxPrice the maximum price
      * @return List of products
      */
     @Override
@@ -129,8 +150,10 @@ public class MockProductService  implements ProductService {
     }
 
     /**
-     * @param productCreateInput
-     * @return
+     * Adds a new product based on the provided input.
+     *
+     * @param productCreateInput the input data for creating the product
+     * @return the created product
      */
     @Override
     public Product addProduct(@NotNull ProductCreateInput productCreateInput) {
@@ -140,22 +163,25 @@ public class MockProductService  implements ProductService {
     }
 
     /**
-     * @param productId
-     * @param name
-     * @param productUpdateInput
-     * @return
+     * Updates an existing product identified by its ID or name.
+     *
+     * @param productId           the ID of the product to update (can be null if name is provided)
+     * @param name                the name of the product to update (can be null if productId is provided)
+     * @param productUpdateInput  the input data for updating the product
+     * @return the updated product
+     * @throws IllegalArgumentException if both productId and name are provided, or if neither is provided
      */
     @Override
     public Product updateProduct(UUID productId, String name, @NotNull ProductUpdateInput productUpdateInput) {
         Product existingProduct;
-        if (productId != null && name == null) {
-            existingProduct = mutableProducts.stream().filter(product -> product.getId().equals(productId)).findFirst().orElseThrow(() -> new RuntimeException("Product with id " + productId + " not found."));
-        } else if (productId == null && name != null) {
-            existingProduct= mutableProducts.stream().filter(product -> product.getName().equals(name)).findFirst().orElseThrow(() -> new RuntimeException("Product with name " + name + " not found."));
-        } else if (productId == null && name == null) {
-            throw new IllegalArgumentException("No arguments present. You must have only one of the following arguments: productId, name, or code");
-        } else {
+        if (productId != null && name != null) {
             throw new IllegalArgumentException("Too many arguments present. You must have only one of the following arguments: productId, name, or code");
+        } else if (productId != null) {
+            existingProduct = mutableProducts.stream().filter(product -> product.getId().equals(productId)).findFirst().orElseThrow(() -> new RuntimeException("Product with id " + productId + " not found."));
+        } else if (name != null) {
+            existingProduct= mutableProducts.stream().filter(product -> product.getName().equals(name)).findFirst().orElseThrow(() -> new RuntimeException("Product with name " + name + " not found."));
+        } else {
+            throw new IllegalArgumentException("No arguments present. You must have only one of the following arguments: productId, name, or code");
         }
         if (productUpdateInput.getName() != null) {
             existingProduct.setName(productUpdateInput.getName());
@@ -167,8 +193,10 @@ public class MockProductService  implements ProductService {
     }
 
     /**
-     * @param productId
-     * @return
+     * Deletes a product by its ID.
+     *
+     * @param productId the ID of the product to delete
+     * @return a response indicating the result of the deletion
      */
     @Override
     public DeleteItemResponse deleteProductById(@NotNull UUID productId) {

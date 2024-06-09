@@ -30,6 +30,20 @@ public class CurrencyQueryDataFetcher {
         this.currencyService = currencyService;
     }
 
+
+    /**
+     * Fetches a list of all available currencies.
+     *
+     * <p>This method queries the CurrencyService to retrieve a list of all currency entities.
+     * It does not require any input arguments and returns a list of Currency objects.</p>
+     *
+     * @return a list of Currency objects representing all available currencies
+     */
+    @DgsQuery
+    public List<Currency> currencies() {
+        return currencyService.currencies();
+    }
+
     /**
      * Retrieves a currency based on the specified base code and target code.
      *
@@ -49,8 +63,9 @@ public class CurrencyQueryDataFetcher {
      * @param targetCode The target currency code. Can be null.
      * @return A list of {@code Currency} objects matching the specified criteria.
      */
+
     @DgsQuery
-    public List<Currency> currencies(@InputArgument final String baseCode, @InputArgument final String targetCode) {
+    public List<Currency> currenciesBy(@InputArgument final String baseCode, @InputArgument final String targetCode) {
         return currencyService.currencies(baseCode, targetCode);
     }
 

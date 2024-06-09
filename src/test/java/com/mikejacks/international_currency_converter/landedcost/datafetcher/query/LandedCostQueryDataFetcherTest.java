@@ -40,11 +40,11 @@ class LandedCostQueryDataFetcherTest {
         );
 
         List<Country> countries = Arrays.asList(
-                new Country("Coruscant", "CSD", 5.0, 2.0),
+                new Country("Coruscant", "COR", 5.0, 2.0),
                 new Country("Naboo", "NAB", 4.0, 1.0),
                 new Country("Hoth", "HOT", 3.0, 10.0),
                 new Country("Endor", "END", 4.0, 5.0),
-                new Country("Tatooine", "TTO", 4.0, 5.0)
+                new Country("Tatooine", "TAT", 4.0, 5.0)
         );
 
         return Stream.of(
@@ -57,9 +57,9 @@ class LandedCostQueryDataFetcherTest {
     void testCalculateLandedCost(List<Currency> expectedCurrencies, List<Product> expectedProducts, List<Country> expectedCountries, String testName) {
         MockLandedCostService landedCostService = new MockLandedCostService(expectedCurrencies, expectedProducts, expectedCountries);
         LandedCostQueryDataFetcher landedCostQueryDataFetcher = new LandedCostQueryDataFetcher(landedCostService);
-        Currency currency = expectedCurrencies.get(0);
-        Product product = expectedProducts.get(0);
-        Country country = expectedCountries.get(0);
+        Currency currency = expectedCurrencies.getFirst();
+        Product product = expectedProducts.getFirst();
+        Country country = expectedCountries.getFirst();
 
         LandedCost landedCost = landedCostQueryDataFetcher.calculateLandedCost(product.getId(), country.getId(), currency.getTargetCode(), currency.getBaseCode());
         assertEquals(4280.0, landedCost.getTotalCost(), 0.01);
