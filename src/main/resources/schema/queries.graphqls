@@ -1,7 +1,8 @@
 type Query {
   # Query Currency
   currency(baseCode: String!, targetCode: String!): Currency
-  currencies(baseCode: String, targetCode: String): [Currency]
+  currencies: [Currency]
+  currenciesBy(baseCode: String, targetCode: String): [Currency]
   currenciesByBaseCode(baseCode: String!): [Currency]
   currenciesByTargetCode(targetCode: String!): [Currency]
 

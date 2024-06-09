@@ -53,7 +53,7 @@ public class CurrencyCreateInput {
      * @throws IllegalArgumentException if the base code is null, not 3 characters long, or contains non-letter characters.
      */
     public void setBaseCode(@NotNull String baseCode) {
-        if (!"[A-Za-z]{3}".matches(baseCode.trim())) {
+        if (!baseCode.trim().matches("[A-Za-z]{3}")) {
             throw new IllegalArgumentException("Currency code must be exactly 3 characters long and only include letters");
         }
         this.baseCode = baseCode.trim().toUpperCase();
@@ -75,7 +75,7 @@ public class CurrencyCreateInput {
      * @throws IllegalArgumentException if the target code is null, not 3 characters long, or contains non-letter characters.
      */
     public void setTargetCode(@NotNull String targetCode) {
-        if (!"[A-Za-z]{3}".matches(targetCode.trim())) {
+        if (!baseCode.trim().matches("[A-Za-z]{3}")) {
             throw new IllegalArgumentException("Currency code must be exactly 3 characters long and only include letters");
         }
         this.targetCode = targetCode.trim().toUpperCase();

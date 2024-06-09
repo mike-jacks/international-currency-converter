@@ -72,7 +72,7 @@ class CurrencyQueryDataFetcherTest {
     void testCurrencies(List<Currency> expectedCurrencies, String testName) {
         MockCurrencyService currencyService = new MockCurrencyService(expectedCurrencies);
         CurrencyQueryDataFetcher currencyQueryDataFetcher = new CurrencyQueryDataFetcher(currencyService);
-        List<Currency> results = currencyQueryDataFetcher.currencies(null, null);
+        List<Currency> results = currencyQueryDataFetcher.currencies();
         assertEquals(Currency.class, results.get(0).getClass());
         assertEquals(expectedCurrencies.get(0).getId(), results.get(0).getId());
     }
