@@ -36,17 +36,15 @@ public class BaseLandedCostService implements LandedCostService {
 
         Country country = countryRepository.findById(countryId).orElseThrow(() -> new RuntimeException("Country not found"));
 
-        Currency conversionRateToBase = localizationGraphQLClient.getCurrency(targetCurrencyCode, baseCurrencyCode);
         Currency conversionRateFromBase = localizationGraphQLClient.getCurrency(baseCurrencyCode, targetCurrencyCode);
 
         Double duty = product.getPrice() * (country.getDutyRate() / 100);
         Double tax = product.getPrice() * (country.getTaxRate() / 100);
         Double totalCost = product.getPrice() + duty + tax;
 
-        Double costInBaseCurrency = totalCost / conversionRateToBase.getConversionRate();
-        Double convertedTotalCost = costInBaseCurrency * conversionRateFromBase.getConversionRate();
+        Double calculatedTotalCost = totalCost * conversionRateFromBase.getConversionRate();
 
-        return new LandedCost(convertedTotalCost);
+        return new LandedCost(calculatedTotalCost);
     }
 
 

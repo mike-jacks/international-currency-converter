@@ -12,9 +12,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @Component
 public class LocalizationGraphQLClient {
+    private static final Logger logger = Logger.getLogger(LocalizationGraphQLClient.class.getName());
     private final String endpoint;
 
     @Autowired
@@ -23,7 +25,7 @@ public class LocalizationGraphQLClient {
     }
 
     public Currency getCurrency(String baseCode, String targetCode) {
-        String query = "{ getCurrency(baseCode: \"" + baseCode + "\", targetCode: \"" + targetCode + "\") { baseCode targetCode conversionRate } }";
+        String query = "{ currency(baseCode: \"" + baseCode + "\", targetCode: \"" + targetCode + "\") { baseCode targetCode conversionRate } }";
         WebClient webClient = WebClient.create(endpoint);
 
         Mono<Map<String, Object>> response = webClient.post()
@@ -32,9 +34,10 @@ public class LocalizationGraphQLClient {
                 .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {});
 
         Map<String, Object> data = response.block();
+        logger.info("GraphQL Response: " + data.toString());
         Optional<Map<String, Object>> optionalCurrencyData = castToMap(data.get("data"));
         if (optionalCurrencyData.isPresent()) {
-            Map<String, Object> currencyData = (Map<String, Object>) optionalCurrencyData.get().get("getCurrency");
+            Map<String, Object> currencyData = (Map<String, Object>) optionalCurrencyData.get().get("currency");
             Currency currency = new Currency((UUID) currencyData.get("id"), (String) currencyData.get("baseCode"), (String) currencyData.get("targetCode"), (Double) currencyData.get("conversionRate"));
             return currency;
         } else {
