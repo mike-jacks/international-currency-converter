@@ -35,7 +35,6 @@ public class CurrencyCreateInput {
         this.setBaseCode(baseCode);
         this.setTargetCode(targetCode);
         this.setConversionRate(conversionRate);
-d
     }
 
     /**
