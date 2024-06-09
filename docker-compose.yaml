@@ -5,8 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.local
-      args:
-        APP_VERSION: ${APP_VERSION}
     ports:
       - "8081:8080"
     env_file:
