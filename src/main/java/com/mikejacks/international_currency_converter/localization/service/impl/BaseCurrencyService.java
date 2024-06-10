@@ -12,14 +12,16 @@ import org.springframework.stereotype.Service;
 import com.mikejacks.international_currency_converter.localization.entity.Currency;
 import com.mikejacks.international_currency_converter.localization.repository.CurrencyRepository;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
 import java.util.List;
 import java.util.UUID;
 
+import com.mikejacks.international_currency_converter.util.HttpUtils;
+
+/**
+ * Implementation of the CurrencyService interface.
+ *
+ * <p>This service handles CRUD operations for currencies and interacts with an external API to update conversion rates.</p>
+ */
 @Service
 public class BaseCurrencyService implements CurrencyService {
     @Value("${FREECURRENCY_API_KEY}")
@@ -31,6 +33,11 @@ public class BaseCurrencyService implements CurrencyService {
 
     private final CurrencyRepository currencyRepository;
 
+    /**
+     * Constructs a new instance of {@code BaseCurrencyService} with the specified currency repository.
+     *
+     * @param currencyRepository The repository used for currency data access and management.
+     */
     @Autowired
     public BaseCurrencyService(CurrencyRepository currencyRepository) {
         this.currencyRepository = currencyRepository;
@@ -129,7 +136,6 @@ public class BaseCurrencyService implements CurrencyService {
      * @return The updated {@code Currency} object.
      * @throws IllegalArgumentException if a currency with the specified ID does not exist.
      */
-
     @Override
     public Currency updateCurrencyById(UUID currencyId, CurrencyUpdateInput currencyUpdateInput) {
        Currency existingCurrency = currencyRepository.findById(currencyId).orElse(null);
@@ -148,6 +154,17 @@ public class BaseCurrencyService implements CurrencyService {
        return currencyRepository.save(existingCurrency);
     }
 
+    /**
+     * Updates the conversion rate of the currency identified by the given currencyId to a live rate.
+     *
+     * <p>This method finds the existing currency by its ID from the repository. If the currency is found,
+     * it updates its conversion rate by fetching the live rate from an external API. If the currency is not
+     * found, it throws an IllegalArgumentException.</p>
+     *
+     * @param currencyId The UUID of the currency to update.
+     * @return The updated Currency object with the new conversion rate.
+     * @throws IllegalArgumentException if the currency with the specified ID is not found.
+     */
     @Override
     public Currency updateCurrencyRateToLiveById(UUID currencyId) {
        Currency existingCurrency = currencyRepository.findById(currencyId).orElse(null);
@@ -159,8 +176,8 @@ public class BaseCurrencyService implements CurrencyService {
        String urlString = FREECURRENCY_API_URL_HOST + FREECURRENCY_API_KEY + "&base_currency=" + baseCode + "&currencies=" + targetCode;
 
        try {
-           String response = getJsonResponse(urlString);
-           JSONObject responseData = parseJsonResponse(response);
+           String response = HttpUtils.getJsonResponse(urlString);
+           JSONObject responseData = HttpUtils.parseJsonResponse(response);
            Double liveConversionRate = responseData.getDouble(targetCode);
            existingCurrency.setConversionRate(liveConversionRate);
            return currencyRepository.save(existingCurrency);
@@ -168,23 +185,5 @@ public class BaseCurrencyService implements CurrencyService {
            e.printStackTrace();
            throw new RuntimeException("Failed to update currency to live rate: " + e.getMessage());
        }
-    }
-
-    private @NotNull String getJsonResponse(String urlString) throws Exception {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(new URI(urlString)).header("Content-Type", "application/json").build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() != 200) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
-        }
-
-        return response.body();
-    }
-
-    private JSONObject parseJsonResponse(String jsonResponse) throws Exception {
-        JSONObject jsonObject = new JSONObject(jsonResponse);
-        return jsonObject.getJSONObject("data");
     }
 }
