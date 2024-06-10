@@ -15,9 +15,19 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * Unit tests for {@code CountryQueryDataFetcher}.
+ *
+ * <p>This class tests the query methods of the {@code CountryQueryDataFetcher} class using mock data.</p>
+ */
 @ExtendWith(MockitoExtension.class)
 public class CountryQueryDataFetcherTest {
 
+    /**
+     * Provides mock country lists for parameterized tests.
+     *
+     * @return A stream of arguments containing mock country lists and test names.
+     */
     private static @NotNull Stream<Arguments> mockCountriesList() {
         return Stream.of(
                 Arguments.of(Collections.emptyList(), "Empty List"),
@@ -33,6 +43,12 @@ public class CountryQueryDataFetcherTest {
     }
 
 
+    /**
+     * Tests the {@code countries} method of {@code CountryQueryDataFetcher}.
+     *
+     * @param expectedCountries The expected list of countries.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockCountriesList")
     void testCountries(List<Country> expectedCountries, String testName) {
@@ -42,6 +58,12 @@ public class CountryQueryDataFetcherTest {
         assertEquals(expectedCountries.size(), result.size());
     }
 
+    /**
+     * Tests the {@code country} method of {@code CountryQueryDataFetcher}.
+     *
+     * @param expectedCountries The expected list of countries.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockCountriesList")
     void testCountry(List<Country> expectedCountries, String testName) {
@@ -71,6 +93,12 @@ public class CountryQueryDataFetcherTest {
 
     }
 
+    /**
+     * Tests the {@code countryById} method of {@code CountryQueryDataFetcher}.
+     *
+     * @param expectedCountries The expected list of countries.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockCountriesList")
     void testCountryById(List<Country> expectedCountries, String testName) {
@@ -85,6 +113,12 @@ public class CountryQueryDataFetcherTest {
         }
     }
 
+    /**
+     * Tests the {@code countryByName} method of {@code CountryQueryDataFetcher}.
+     *
+     * @param expectedCountries The expected list of countries.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockCountriesList")
     void testCountryByName(List<Country> expectedCountries, String testName) {
@@ -99,6 +133,12 @@ public class CountryQueryDataFetcherTest {
         }
     }
 
+    /**
+     * Tests the {@code countryByCode} method of {@code CountryQueryDataFetcher}.
+     *
+     * @param expectedCountries The expected list of countries.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockCountriesList")
     void testCountryByCode(List<Country> expectedCountries, String testName) {

@@ -20,9 +20,19 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * Unit tests for {@code CountryMutationDataFetcher}.
+ *
+ * <p>This class tests the mutation methods of the {@code CountryMutationDataFetcher} class using mock data.</p>
+ */
 @DgsComponent
 class CountryMutationDataFetcherTest {
 
+    /**
+     * Provides mock country lists for parameterized tests.
+     *
+     * @return A stream of arguments containing mock country lists and test names.
+     */
     private static @NotNull Stream<Arguments> mockCountriesList() {
         return Stream.of(
                 Arguments.of(Collections.emptyList(), "Empty List"),
@@ -37,6 +47,12 @@ class CountryMutationDataFetcherTest {
         );
     }
 
+    /**
+     * Tests the {@code addCountry} method of {@code CountryMutationDataFetcher}.
+     *
+     * @param countries The expected list of countries.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockCountriesList")
     void testAddCountry(@NotNull List<Country> countries, String testName) {
@@ -52,6 +68,12 @@ class CountryMutationDataFetcherTest {
         assertEquals(countriesBeginningListSize+1, mockCountryService.mutableCountries.size());
     }
 
+    /**
+     * Tests the {@code updateCountry} method of {@code CountryMutationDataFetcher}.
+     *
+     * @param countries The expected list of countries.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockCountriesList")
     void testUpdateCountry(@NotNull List<Country> countries, String testName) {
@@ -95,6 +117,12 @@ class CountryMutationDataFetcherTest {
         }
     }
 
+    /**
+     * Tests the {@code updateCountryById} method of {@code CountryMutationDataFetcher}.
+     *
+     * @param countries The expected list of countries.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockCountriesList")
     void testUpdateCountryById(@NotNull List<Country> countries, String testName) {
@@ -117,6 +145,12 @@ class CountryMutationDataFetcherTest {
         }
     }
 
+    /**
+     * Tests the {@code updateCountryByName} method of {@code CountryMutationDataFetcher}.
+     *
+     * @param countries The expected list of countries.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockCountriesList")
     void testUpdateCountryByName(@NotNull List<Country> countries, String testName) {
@@ -139,6 +173,16 @@ class CountryMutationDataFetcherTest {
         }
     }
 
+    /**
+     * Tests the {@code deleteCountryById} method of {@code CountryMutationDataFetcher}.
+     *
+     * <p>This test verifies that the deletion of a country by its ID is handled correctly.
+     * It ensures that the method returns the appropriate response and updates the list of countries accordingly.
+     * The test uses parameterized testing with a list of mock countries and a descriptive test name.</p>
+     *
+     * @param countries The expected list of countries used for testing.
+     * @param testName The name of the test case.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockCountriesList")
     void testDeleteCountryById(@NotNull List<Country> countries, String testName) {
