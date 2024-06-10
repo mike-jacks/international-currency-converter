@@ -77,6 +77,22 @@ class CurrencyQueryDataFetcherTest {
         assertEquals(expectedCurrencies.get(0).getId(), results.get(0).getId());
     }
 
+    @ParameterizedTest(name = "{1}")
+    @MethodSource("mockCurrenciesLists")
+    void testCurrenciesBy(List<Currency> expectedCurrencies, String testName) {
+        MockCurrencyService currencyService = new MockCurrencyService(expectedCurrencies);
+        CurrencyQueryDataFetcher currencyQueryDataFetcher = new CurrencyQueryDataFetcher(currencyService);
+
+        List<Currency> results = currencyQueryDataFetcher.currenciesBy("COR", null);
+        assertEquals(Currency.class, results.get(0).getClass());
+        assertEquals(2, results.size());
+
+        results = currencyQueryDataFetcher.currenciesBy(null, null);
+
+        assertEquals(expectedCurrencies.size(), results.size());
+
+    }
+
     /**
      * Tests the {@code currenciesByBaseCode} method of {@code CurrencyQueryDataFetcher}.
      *
