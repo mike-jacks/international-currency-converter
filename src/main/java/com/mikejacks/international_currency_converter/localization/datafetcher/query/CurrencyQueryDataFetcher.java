@@ -66,7 +66,7 @@ public class CurrencyQueryDataFetcher {
 
     @DgsQuery
     public List<Currency> currenciesBy(@InputArgument final String baseCode, @InputArgument final String targetCode) {
-        return currencyService.currencies(baseCode, targetCode);
+        return currencyService.currenciesBy(baseCode, targetCode);
     }
 
     /**
@@ -77,7 +77,7 @@ public class CurrencyQueryDataFetcher {
      */
     @DgsQuery
     public List<Currency> currenciesByBaseCode(@InputArgument final String baseCode) {
-        return currencyService.currencies(baseCode, null);
+        return currencyService.currenciesBy(baseCode, null);
     }
 
     /**
@@ -88,7 +88,7 @@ public class CurrencyQueryDataFetcher {
      */
     @DgsQuery
     public List<Currency> currenciesByTargetCode(@InputArgument final String targetCode) {
-        return currencyService.currencies(null, targetCode);
+        return currencyService.currenciesBy(null, targetCode);
     }
 
 

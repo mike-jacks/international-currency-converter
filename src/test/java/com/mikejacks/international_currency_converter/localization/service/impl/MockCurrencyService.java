@@ -102,7 +102,7 @@ public class MockCurrencyService implements CurrencyService {
      * @throws IllegalArgumentException if both base code and target code are specified.
      */
     @Override
-    public List<Currency> currencies(String baseCode, String targetCode) {
+    public List<Currency> currenciesBy(String baseCode, String targetCode) {
         if (baseCode != null && targetCode != null) {
             throw new IllegalArgumentException("Only one of either baseCode or targetCode can be specified. Not both.");
         } else if (baseCode != null) {

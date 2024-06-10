@@ -40,7 +40,7 @@ public interface CurrencyService {
      * @return A list of {@code Currency} objects matching the specified criteria,
      *         or all currencies if no criteria are specified.
      */
-    List<Currency> currencies(String baseCode, String targetCode);
+    List<Currency> currenciesBy(String baseCode, String targetCode);
 
     /**
      * Adds a new currency.
