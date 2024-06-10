@@ -10,15 +10,28 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.InvalidParameterException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * Unit tests for {@code ProductQueryDataFetcher}.
+ *
+ * <p>This class tests the query methods of the {@code ProductQueryDataFetcher} class using mock data.</p>
+ */
 @ExtendWith(MockitoExtension.class)
 public class ProductQueryDataFetcherTest {
 
+    /**
+     * Provides mock product lists for parameterized tests.
+     *
+     * @return A stream of arguments containing mock product lists and test names.
+     */
     private static @NotNull Stream<Arguments> mockProductsLists() {
         return Stream.of(
                 Arguments.of(Collections.emptyList(), "Empty list"),
@@ -32,6 +45,12 @@ public class ProductQueryDataFetcherTest {
         );
     }
 
+    /**
+     * Tests the {@code products} method of {@code ProductQueryDataFetcher}.
+     *
+     * @param expectedProducts The expected list of products.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockProductsLists")
     void testProducts(List<Product> expectedProducts, String testName) {
@@ -41,6 +60,12 @@ public class ProductQueryDataFetcherTest {
         assertEquals(expectedProducts.size(), results.size());
     }
 
+    /**
+     * Tests the {@code product} method of {@code ProductQueryDataFetcher}.
+     *
+     * @param expectedProducts The expected list of products.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockProductsLists")
     void testProduct(List<Product> expectedProducts, String testName) {
@@ -76,6 +101,12 @@ public class ProductQueryDataFetcherTest {
         }
     }
 
+    /**
+     * Tests the {@code productById} method of {@code ProductQueryDataFetcher}.
+     *
+     * @param expectedProducts The expected list of products.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockProductsLists")
     void testProductById(List<Product> expectedProducts, String testName) {
@@ -88,6 +119,12 @@ public class ProductQueryDataFetcherTest {
         }
     }
 
+    /**
+     * Tests the {@code productByName} method of {@code ProductQueryDataFetcher}.
+     *
+     * @param expectedProducts The expected list of products.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockProductsLists")
     void testProductByName(List<Product> expectedProducts, String testName) {
@@ -100,6 +137,12 @@ public class ProductQueryDataFetcherTest {
         }
     }
 
+    /**
+     * Tests the {@code productsByPriceLessThanOrEqualTo} method of {@code ProductQueryDataFetcher}.
+     *
+     * @param expectedProducts The expected list of products.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockProductsLists")
     void testProductsByPriceLessThanOrEqualTo(List<Product> expectedProducts, String testName) {
@@ -128,6 +171,12 @@ public class ProductQueryDataFetcherTest {
         }
     }
 
+    /**
+     * Tests the {@code productsByPriceGreaterThanOrEqualTo} method of {@code ProductQueryDataFetcher}.
+     *
+     * @param expectedProducts The expected list of products.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockProductsLists")
     void testProductsByPriceGreaterThanOrEqualTo(List<Product> expectedProducts, String testName) {

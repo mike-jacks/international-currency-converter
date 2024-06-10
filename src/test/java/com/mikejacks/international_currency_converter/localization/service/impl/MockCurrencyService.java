@@ -11,6 +11,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Mock implementation of the {@link CurrencyService} interface.
+ *
+ * <p>This service provides methods for managing currencies, including adding, updating,
+ * retrieving, and updating conversion rates to live rates. It uses an in-memory list
+ * to store currency data for simulation purposes.</p>
+ *
+ * <p>The class includes both query and mutation methods:</p>
+ *
+ * <ul>
+ * <li>Query Methods:
+ *   <ul>
+ *     <li>{@link #currencies()}: Retrieves all currencies.</li>
+ *     <li>{@link #currency(String, String)}: Retrieves a specific currency based on base code and target code.</li>
+ *     <li>{@link #currencies(String, String)}: Retrieves currencies based on base code or target code.</li>
+ *   </ul>
+ * </li>
+ * <li>Mutation Methods:
+ *   <ul>
+ *     <li>{@link #addCurrency(CurrencyCreateInput)}: Adds a new currency.</li>
+ *     <li>{@link #updateCurrencyById(UUID, CurrencyUpdateInput)}: Updates an existing currency's details.</li>
+ *     <li>{@link #updateCurrencyRateToLiveById(UUID)}: Updates the conversion rate of an existing currency to a live rate.</li>
+ *   </ul>
+ * </li>
+ * </ul>
+ *
+ * <p>The in-memory list allows for the addition, modification, and retrieval of currency
+ * objects for testing purposes without requiring a database.</p>
+ *
+ * @see CurrencyService
+ * @see Currency
+ * @see CurrencyCreateInput
+ * @see CurrencyUpdateInput
+ */
 @Service
 public class MockCurrencyService implements CurrencyService {
     public List<Currency> currencies;
@@ -95,7 +129,7 @@ public class MockCurrencyService implements CurrencyService {
      * @throws IllegalArgumentException if a currency with the same base code and target code already exists.
      */
     @Override
-    public Currency addCurrency(CurrencyCreateInput currencyCreateInput) {
+    public Currency addCurrency(@NotNull CurrencyCreateInput currencyCreateInput) {
         Currency newCurrency = new Currency(currencyCreateInput.getBaseCode(), currencyCreateInput.getTargetCode(), currencyCreateInput.getConversionRate());
         Currency existingCurrency = mutableCurrencies.stream().filter(currency-> currency.getBaseCode().equals(currencyCreateInput.getBaseCode()) && currency.getTargetCode().equals(currencyCreateInput.getTargetCode())).findFirst().orElse(null);
         if (existingCurrency != null) {
@@ -137,8 +171,26 @@ public class MockCurrencyService implements CurrencyService {
 
     }
 
+    /**
+     * Updates the conversion rate of the currency identified by the given currencyId to a live rate.
+     *
+     * <p>This method finds the existing currency by its ID from a list of mutable currencies. If the currency
+     * is found, it updates its conversion rate by incrementing the current rate by 0.2. If the currency is not
+     * found, it throws an IllegalArgumentException.
+     *
+     * @param currencyId The UUID of the currency to update.
+     * @return The updated Currency object with the new conversion rate.
+     * @throws IllegalArgumentException if the currency with the specified ID is not found.
+     */
     @Override
     public Currency updateCurrencyRateToLiveById(UUID currencyId) {
-        return new Currency();
+        Currency existingCurrency = mutableCurrencies.stream().filter(currency -> currency.getId().equals(currencyId)).findFirst().orElse(null);
+        if (existingCurrency == null) {
+            throw new IllegalArgumentException("Currency with id " + currencyId + " not found.");
+        }
+        Double currentRate = existingCurrency.getConversionRate();
+        Double newLiveRate = currentRate + 0.2;
+        existingCurrency.setConversionRate(newLiveRate);
+        return existingCurrency;
     }
 }

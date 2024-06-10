@@ -14,16 +14,38 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+/**
+ * Client class for interacting with the Localization GraphQL API.
+ *
+ * <p>This class provides methods to fetch currency conversion data from a GraphQL endpoint.
+ * It utilizes Spring's {@code WebClient} to send requests and handle responses.</p>
+ */
 @Component
 public class LocalizationGraphQLClient {
     private static final Logger logger = Logger.getLogger(LocalizationGraphQLClient.class.getName());
     private final String endpoint;
 
+    /**
+     * Constructs a new {@code LocalizationGraphQLClient} with the specified GraphQL endpoint.
+     *
+     * @param endpoint The URL of the GraphQL endpoint.
+     */
     @Autowired
     public LocalizationGraphQLClient(@Value("${localization.graphql.endpoint}") String endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     * Fetches currency conversion data for the specified base and target currency codes.
+     *
+     * <p>This method sends a GraphQL query to the configured endpoint to retrieve currency conversion data.
+     * It returns a {@code Currency} object containing the conversion details.</p>
+     *
+     * @param baseCode The base currency code.
+     * @param targetCode The target currency code.
+     * @return A {@code Currency} object containing the conversion details.
+     * @throws RuntimeException if the response format is invalid or if an error occurs during the request.
+     */
     public Currency getCurrency(String baseCode, String targetCode) {
         String query = "{ currency(baseCode: \"" + baseCode + "\", targetCode: \"" + targetCode + "\") { baseCode targetCode conversionRate } }";
         WebClient webClient = WebClient.create(endpoint);
@@ -45,6 +67,15 @@ public class LocalizationGraphQLClient {
         }
     }
 
+    /**
+     * Casts an object to a map if possible.
+     *
+     * <p>This method attempts to cast the given object to a {@code Map<String, Object>}. If the object is an instance of
+     * {@code Map}, it is cast and returned. Otherwise, an empty {@code Optional} is returned.</p>
+     *
+     * @param obj The object to cast.
+     * @return An {@code Optional} containing the cast map, or empty if the cast is not possible.
+     */
     @SuppressWarnings("unchecked")
     public static Optional<Map<String, Object>> castToMap(Object obj) {
         if (obj instanceof Map) {

@@ -10,14 +10,35 @@ import com.mikejacks.international_currency_converter.landedcost.entity.Country;
 import com.mikejacks.international_currency_converter.localization.entity.Currency;
 import com.mikejacks.international_currency_converter.localization.repository.CurrencyRepository;
 
+/**
+ * Main application class for the International Currency Converter.
+ *
+ * <p>This class serves as the entry point for the Spring Boot application.
+ * It also initializes the application with some predefined countries and currencies if the repositories are empty.</p>
+ */
 @SpringBootApplication
 public class InternationalCurrencyConverterApplication {
 
 
+    /**
+     * The main method serves as the entry point for the Spring Boot application.
+     *
+     * @param args The command-line arguments.
+     */
 	public static void main(String[] args) {
 		SpringApplication.run(InternationalCurrencyConverterApplication.class, args);
 	}
 
+    /**
+     * Initializes the application with predefined countries and currencies if the repositories are empty.
+     *
+     * <p>This method clears existing entries in the {@code CountryRepository} and {@code CurrencyRepository} and
+     * adds new entries if the repositories are empty. It is executed at application startup.</p>
+     *
+     * @param currencyRepository The repository for managing currency entities.
+     * @param countryRepository The repository for managing country entities.
+     * @return A {@code CommandLineRunner} that initializes the repositories with predefined data.
+     */
 	@Bean
 	CommandLineRunner init(CurrencyRepository currencyRepository, CountryRepository countryRepository) {
 		return args -> {

@@ -14,21 +14,44 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Optional;
 
+/**
+ * Service implementation for handling operations related to countries.
+ */
 @Service
 public class BaseCountryService implements CountryService {
 
     private final CountryRepository countryRepository;
 
+    /**
+     * Constructs a new {@code BaseCountryService} with the specified {@code CountryRepository}.
+     *
+     * @param countryRepository The repository used to handle country data operations.
+     */
     @Autowired
     public BaseCountryService(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
     }
 
     // Query Services
+
+    /**
+     * Retrieves a list of all countries.
+     *
+     * @return A list of all {@code Country} objects.
+     */
     @Override public List<Country> countries() {
         return countryRepository.findAll();
     }
 
+    /**
+     * Retrieves a country based on the specified ID, name, or code.
+     *
+     * @param countryId The UUID of the country to retrieve. Can be null.
+     * @param name The name of the country to retrieve. Can be null.
+     * @param code The code of the country to retrieve. Can be null.
+     * @return The {@code Country} object matching the specified criteria, or {@code null} if no such country is found.
+     * @throws IllegalArgumentException if both or none of the arguments are provided.
+     */
     @Override public Country country(final UUID countryId, final String name, final String code) {
         if (countryId != null && name == null && code == null) {
             return countryRepository.findCountryById(countryId).orElse(null);
@@ -47,6 +70,13 @@ public class BaseCountryService implements CountryService {
     }
 
     // Mutation Services
+
+    /**
+     * Adds a new country to the database.
+     *
+     * @param countryCreateInput A {@code CountryCreateInput} object containing the details of the new country to be added.
+     * @return The newly added {@code Country} object.
+     */
     @Override public Country addCountry(@NotNull final CountryCreateInput countryCreateInput) {
         System.out.println("Adding country: " + countryCreateInput);
         Country newCountry = new Country(
@@ -60,6 +90,15 @@ public class BaseCountryService implements CountryService {
         return savedCountry;
     }
 
+    /**
+     * Updates an existing country based on the provided ID or name with the provided input data.
+     *
+     * @param countryId The UUID of the country to update. Can be null.
+     * @param name The name of the country to update. Can be null.
+     * @param country The {@code CountryUpdateInput} object containing the updated details of the country.
+     * @return The updated {@code Country} object.
+     * @throws IllegalArgumentException if both or none of the arguments are provided, or if the country is not found.
+     */
     @Override public Country updateCountry(final UUID countryId, final String name, final @NotNull CountryUpdateInput country) {
         Country existingCountry;
         if (countryId != null && name != null) {
@@ -85,6 +124,14 @@ public class BaseCountryService implements CountryService {
         return countryRepository.save(existingCountry);
     }
 
+    /**
+     * Deletes a country by its ID.
+     *
+     * @param countryId The UUID of the country to be deleted. Must not be null.
+     * @return A {@code DeleteItemResponse} indicating the success or failure of the deletion operation.
+     *         If the country is successfully deleted, the response contains the country ID and a success message.
+     *         If the country is not found, the response contains a failure message and a null country ID.
+     */
     @Override public DeleteItemResponse deleteCountryById(final @NotNull UUID countryId) {
        Optional<Country> existingCountryOptional = countryRepository.findById(countryId);
        if (existingCountryOptional.isEmpty()) {

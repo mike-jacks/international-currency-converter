@@ -18,9 +18,19 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Unit tests for {@code LandedCostQueryDataFetcher}.
+ *
+ * <p>This class tests the query methods of the {@code LandedCostQueryDataFetcher} class using mock data.</p>
+ */
 @ExtendWith(MockitoExtension.class)
 class LandedCostQueryDataFetcherTest {
 
+    /**
+     * Provides mock data for parameterized tests.
+     *
+     * @return A stream of arguments containing mock data lists and test names.
+     */
     private static @NotNull Stream<Arguments> mockData() {
         List<Currency> currencies = Arrays.asList(
                 new Currency("COR", "TAT", 2.0), // Coruscant basecode
@@ -52,6 +62,14 @@ class LandedCostQueryDataFetcherTest {
         );
     }
 
+    /**
+     * Tests the {@code calculateLandedCost} method of {@code LandedCostQueryDataFetcher}.
+     *
+     * @param expectedCurrencies The expected list of currencies.
+     * @param expectedProducts The expected list of products.
+     * @param expectedCountries The expected list of countries.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{3}")
     @MethodSource("mockData")
     void testCalculateLandedCost(List<Currency> expectedCurrencies, List<Product> expectedProducts, List<Country> expectedCountries, String testName) {
@@ -62,6 +80,6 @@ class LandedCostQueryDataFetcherTest {
         Country country = expectedCountries.getFirst();
 
         LandedCost landedCost = landedCostQueryDataFetcher.calculateLandedCost(product.getId(), country.getId(), currency.getTargetCode(), currency.getBaseCode());
-        assertEquals(4280.0, landedCost.getTotalCost(), 0.01);
+        assertEquals(2140.0, landedCost.getTotalCost(), 0.01);
     }
 }

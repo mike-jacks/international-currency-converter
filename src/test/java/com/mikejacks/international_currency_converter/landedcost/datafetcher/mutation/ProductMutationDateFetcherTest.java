@@ -19,9 +19,19 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for {@code ProductMutationDateFetcher}.
+ *
+ * <p>This class tests the mutation methods of the {@code ProductMutationDateFetcher} class using mock data.</p>
+ */
 @DgsComponent
 class ProductMutationDateFetcherTest {
 
+    /**
+     * Provides mock product lists for parameterized tests.
+     *
+     * @return A stream of arguments containing mock product lists and test names.
+     */
     private static @NotNull Stream<Arguments> mockProductsLists() {
         return Stream.of(
                 Arguments.of(Collections.emptyList(), "Empty list"),
@@ -36,6 +46,12 @@ class ProductMutationDateFetcherTest {
     }
 
 
+    /**
+     * Tests the {@code addProduct} method of {@code ProductMutationDateFetcher}.
+     *
+     * @param expectedProducts The expected list of products.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockProductsLists")
     void testAddProduct(@NotNull List<Product> expectedProducts, String testName) {
@@ -50,6 +66,13 @@ class ProductMutationDateFetcherTest {
         assertEquals(productsBeginningListSize + 1, productService.mutableProducts.size());
 
     }
+
+    /**
+     * Tests the {@code updateProduct} method of {@code ProductMutationDateFetcher}.
+     *
+     * @param expectedProducts The expected list of products.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name = "{1}")
     @MethodSource("mockProductsLists")
     void testUpdateProduct(@NotNull List<Product> expectedProducts, String testName) {
@@ -89,6 +112,12 @@ class ProductMutationDateFetcherTest {
         }
     }
 
+    /**
+     * Tests the {@code updateProductById} method of {@code ProductMutationDateFetcher}.
+     *
+     * @param expectedProducts The expected list of products.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name= "{1}")
     @MethodSource("mockProductsLists")
     void testUpdateProductById(@NotNull List<Product> expectedProducts, String testName) {
@@ -110,6 +139,12 @@ class ProductMutationDateFetcherTest {
 
     }
 
+    /**
+     * Tests the {@code updateProductByName} method of {@code ProductMutationDateFetcher}.
+     *
+     * @param expectedProducts The expected list of products.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name= "{1}")
     @MethodSource("mockProductsLists")
     void testUpdateProductByName(@NotNull List<Product> expectedProducts, String testName) {
@@ -132,6 +167,12 @@ class ProductMutationDateFetcherTest {
     }
 
 
+    /**
+     * Tests the {@code deleteProductById} method of {@code ProductMutationDateFetcher}.
+     *
+     * @param expectedProducts The expected list of products.
+     * @param testName The name of the test.
+     */
     @ParameterizedTest(name= "{1}")
     @MethodSource("mockProductsLists")
     void testDeleteProductById(@NotNull List<Product> expectedProducts, String testName) {

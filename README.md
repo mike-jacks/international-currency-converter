@@ -12,7 +12,7 @@ A Java-based application for converting currencies when shipping products across
 
 ## Introduction
 
-The International Currency Converter is designed to help users calculate final cost of products sold between borders, including currency exchange rate, duty rate, and tax rate. The application is built using Spring Boot and utilizes Netflix's DGS framework for GraphQL Query's and Mutation's.
+The International Currency Converter is designed to help users calculate final cost of products sold between borders, including currency exchange rate, duty rate, and tax rate. The application is built using Spring Boot and utilizes Netflix's DGS framework for GraphQL Queries and Mutations.
 
 ## Features
 

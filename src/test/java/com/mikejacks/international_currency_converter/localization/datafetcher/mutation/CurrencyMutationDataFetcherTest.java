@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for {@code CurrencyMutationDataFetcher}.
@@ -86,5 +85,32 @@ public class CurrencyMutationDataFetcherTest {
         assertEquals(updateCurrency.getBaseCode(), updatedCurrency.getBaseCode());
         assertEquals(updateCurrency.getTargetCode(), updatedCurrency.getTargetCode());
         assertEquals(updateCurrency.getConversionRate(), updatedCurrency.getConversionRate());
+    }
+
+    /**
+     * Test method for {@code updateCurrencyRateToLiveById} in {@code CurrencyMutationDataFetcher}.
+     *
+     * <p>This test verifies that the conversion rate of a given currency is updated correctly by fetching live data.
+     * It ensures that the base code and target code of the updated currency remain the same, while the conversion rate is updated.
+     *
+     * <p>The test uses parameterized testing with a list of mock currencies and a descriptive test name.
+     *
+     * @param currencies The list of mock currencies used for testing.
+     * @param testName The name of the test case.
+     */
+    @ParameterizedTest(name = "{1}")
+    @MethodSource("mockCurrenciesLists")
+    void testUpdateCurrencyRateToLiveById(List<Currency> currencies, String testName) {
+        MockCurrencyService currencyService = new MockCurrencyService(currencies);
+        CurrencyMutationDataFetcher currencyMutationDataFetcher = new CurrencyMutationDataFetcher(currencyService);
+
+        Currency existingCurrency = currencies.getFirst();
+        UUID existingCurrencyId = existingCurrency.getId();
+        Currency updatedCurrency = currencyMutationDataFetcher.updateCurrencyRateToLiveById(existingCurrencyId);
+
+        assertEquals(existingCurrency.getBaseCode(), updatedCurrency.getBaseCode());
+        assertEquals(existingCurrency.getTargetCode(), updatedCurrency.getTargetCode());
+        assertNotEquals(existingCurrency.getConversionRate(), updatedCurrency.getConversionRate());
+        assertEquals(existingCurrency.getConversionRate() + 0.2, updatedCurrency.getConversionRate(), 0.001);
     }
 }

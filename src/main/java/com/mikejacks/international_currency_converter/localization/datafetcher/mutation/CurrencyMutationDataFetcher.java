@@ -34,6 +34,9 @@ public class CurrencyMutationDataFetcher {
     /**
      * Adds a new currency based on the provided input data.
      *
+     * <p>This mutation method allows the addition of a new currency by accepting a {@code CurrencyCreateInput} object
+     * containing the details of the currency to be added. It delegates the creation operation to the {@code currencyService}.</p>
+     *
      * @param currency The {@code CurrencyCreateInput} object containing the details of the currency to add.
      * @return The newly created {@code Currency} object.
      */
@@ -45,6 +48,10 @@ public class CurrencyMutationDataFetcher {
     /**
      * Updates an existing currency identified by the specified ID with the provided input data.
      *
+     * <p>This mutation method allows updating the details of an existing currency by accepting the currency's unique ID
+     * and a {@code CurrencyUpdateInput} object containing the updated details. The update operation is delegated to the
+     * {@code currencyService}.</p>
+     *
      * @param currencyId The unique ID of the currency to update.
      * @param currency The {@code CurrencyUpdateInput} object containing the updated details of the currency.
      * @return The updated {@code Currency} object.
@@ -54,6 +61,30 @@ public class CurrencyMutationDataFetcher {
         return currencyService.updateCurrencyById(currencyId, currency);
     }
 
+    /**
+     * Updates the conversion rate of a currency to its live rate based on the specified currency ID.
+     *
+     * <p>This mutation method updates the conversion rate of an existing {@code Currency} object to its live rate.
+     * It uses the provided {@code currencyId} to identify the currency to be updated and delegates the update
+     * operation to the {@code currencyService}.</p>
+     *
+     * <p>Example usage:</p>
+     * <pre>{@code
+     * mutation {
+     *     updateCurrencyRateToLiveById(currencyId: "123e4567-e89b-12d3-a456-426614174000") {
+     *         id
+     *         baseCode
+     *         targetCode
+     *         conversionRate
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param currencyId The UUID of the currency to update. Must not be null.
+     * @return The updated {@code Currency} object with the new live conversion rate.
+     * @throws IllegalArgumentException if the currency with the specified ID does not exist.
+     * @throws RuntimeException if the update operation fails due to an error in fetching the live rate.
+     */
     @DgsMutation
     public Currency updateCurrencyRateToLiveById(@InputArgument UUID currencyId) {
         return currencyService.updateCurrencyRateToLiveById(currencyId);
