@@ -28,7 +28,7 @@ The International Currency Converter is designed to help users calculate final c
 
 - Java
 - Spring Boot
-- Hibernate
+- NetflixDGS
 - PostgreSQL
 - Docker
 - Railway for deployment
